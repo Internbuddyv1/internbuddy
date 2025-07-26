@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InternBuddy | Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#4A90E2;
+      --dot:#FF4081;
+      --text:#fff;
+      --muted:#bbb;
+      --border:#444;
+      --card-bg:rgba(34,34,40,0.92);
+      --btn-bg:#4A90E2;
+      --btn-bg-hover:#357abf;
+      --shadow:rgba(0,0,0,.18);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Space Grotesk',sans-serif;
+      background: linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
+      color:var(--text);
+      min-height:100vh;
+      position:relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:20px 40px;
+      background:#111;
+      box-shadow:0 1px 3px var(--shadow);
+      position:sticky;top:0;z-index:10;
+    }
+    .logo{
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:-.5px;
+      color: var(--accent);
+    }
+    .logo span.dot{
+      display:inline-block;
+      width:6px;height:6px;
+      background:var(--dot);
+      border-radius:50%;
+      margin-left:3px;
+      vertical-align: middle;
+    }
+    nav a{
+      margin-left:24px;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:500;
+      transition: color 0.2s;
+    }
+    nav a.btn{
+      background:var(--btn-bg);
+      color:#fff;
+      padding:8px 20px;
+      border-radius:8px;
+      margin-left:32px;
+      transition: background 0.2s;
+    }
+    nav a:hover, nav a.btn:hover {
+      color: var(--accent);
+      background: #fff;
+    }
+    nav a.btn:hover {
+      color: var(--btn-bg);
+      background: #fff;
+    }
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:60px 20px
+    }
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+      align-items:center;
+      margin-bottom:80px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px var(--shadow);
+      padding: 40px 32px;
+    }
+    .hero h1{
+      font-size:40px;
+      font-weight:700;
+      line-height:1.1;
+      margin-bottom:16px;
+      color: #fff;
+    }
+    .hero p{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:32px
+    }
+    .hero img{
+      width:100%;
+      border-radius:16px;
+      box-shadow: 0 2px 8px var(--shadow);
+      max-height:320px;
+      object-fit:cover;
+    }
+    .hero a{
+      background:var(--btn-bg);
+      color:#fff;
+      padding:12px 28px;
+      border-radius:8px;
+      font-weight:600;
+      text-decoration:none;
+      display:inline-block;
+      margin-top:8px;
+      transition: background 0.2s;
+    }
+    .hero a:hover{
+      background:var(--btn-bg-hover);
+    }
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:24px;
+      margin-bottom: 40px;
+    }
+    .card{
+      background:var(--card-bg);
+      border-radius:16px;
+      padding:32px;
+      box-shadow:0 2px 8px var(--shadow);
+      color: #fff;
+      text-align: left;
+    }
+    .card h3{margin-bottom:12px;font-size:20px}
+    .card p{color:var(--muted);font-size:15px}
+    #sponsor-section{
+      display:none;
+      margin-top:60px;
+      text-align:center;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px var(--shadow);
+      padding: 40px 32px;
+      color: #fff;
+    }
+    #sponsor-section h2{margin-bottom:20px}
+    .btn-sponsor{
+      padding:10px 22px;
+      background:var(--btn-bg);
+      color:#fff;
+      border:none;
+      border-radius:6px;
+      font-weight:600;
+      cursor:pointer;
+      margin-top:12px;
+      transition: background 0.2s;
+    }
+    .btn-sponsor:hover {
+      background: var(--btn-bg-hover);
+    }
+    table{
+      width:100%;
+      background:rgba(34,34,40,0.85);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 2px 8px var(--shadow);
+      border-collapse:collapse;
+      margin-bottom: 16px;
+    }
+    thead{
+      background:var(--btn-bg);
+      color:#fff
+    }
+    th,td{
+      padding:12px 16px;
+      text-align:left;
+      color: #fff;
+    }
+    tbody tr:nth-child(even){
+      background:rgba(255,255,255,0.04)
+    }
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;gap:24px;padding:24px 8px;}
+      .hero img{max-height:220px;}
+    }
+    @media (max-width:600px){
+      header{padding:16px 8px;}
+      .logo{font-size:18px;}
+      main{padding:24px 4px;}
+      .hero{padding:16px 4px;}
+      .card{padding:18px;}
+      #sponsor-section{padding:18px;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">InternBuddy<span class="dot"></span></div>
+  <nav>
+    <a href="homepage.html">Dashboard</a>
+    <a href="edit-profile.html">Profile</a>
+    <a href="index.html" class="btn">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1>Welcome back, ready to land your next role?</h1>
+      <p>Your personalised matches, applications and progress—all in one place.</p>
+      <a href="find-job.html">
+        Find your next role
+      </a>
+    </div>
+    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=60" alt="Career"/>
+  </section>
+
+  <section class="cards">
+    <div class="card"><h3>🔍 Cv Creator</h3><p>Creating a CV has never been easier</p></div>
+    <div class="card"><h3>📈 Application Tracker</h3><p>Track every step—from “Applied” to “Offer”.</p></div>
+    <div class="card"><h3>📅 Interview Prep</h3><p>Mock interviews, tips and company insights—ready when you are.</p></div>
+  </section>
+
+  <section id="sponsor-section">
+    <h2>Find your next sponsor-friendly company</h2>
+    <table>
+      <thead><tr><th>Company</th><th>Location</th><th>Roles</th><th>Sponsor Type</th></tr></thead>
+      <tbody>
+        <tr><td>Google</td><td>Dublin, London, Zurich</td><td>SWE, Data, PM</td><td>EU Blue Card</td></tr>
+        <tr><td>Stripe</td><td>Dublin, Amsterdam</td><td>Backend, Infra</td><td>H-1B / EU Blue Card</td></tr>
+        <tr><td>Amazon</td><td>Berlin, Luxembourg</td><td>Full-stack, ML</td><td>EU Blue Card</td></tr>
+        <tr><td>Shopify</td><td>Remote EU</td><td>Frontend, Mobile</td><td>EU Blue Card</td></tr>
+      </tbody>
+    </table>
+    <button class="btn-sponsor" onclick="location.href='all-sponsor-jobs.html'">
+      View All Sponsor Jobs
+    </button>
+</main>
+
+<script>
+  const profile = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
+  if (profile.workAuth === 'Need sponsorship') {
+    document.getElementById('sponsor-section').style.display = 'block';
+  }
+</script>
+</body>
+</html>
