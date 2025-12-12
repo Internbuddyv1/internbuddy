@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Google Sign-In Demo</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <h1>Google Sign-In Example</h1>
+
+  <div id="g_id_signin"></div>
+
+  <script>
+    function handleCredentialResponse(response) {
+      console.log("Encoded JWT ID token: " + response.credential);
+
+      // Decode JWT to get user info
+      const base64Url = response.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      const user = JSON.parse(jsonPayload);
+      console.log("User info:", user);
+
+      document.body.insertAdjacentHTML('beforeend', `<p>Welcome, ${user.name} (${user.email})</p>`);
+    }
+
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "823999548591-g2i76g0es6sk6somflpqtvmrg1de5h9e.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+    };
+  </script>
+</body>
+</html>
