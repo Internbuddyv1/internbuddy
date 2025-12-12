@@ -1,209 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>InternBuddy | Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --accent:#4A90E2;
-      --dot:#FF4081;
-      --text:#fff;
-      --muted:#bbb;
-      --border:#444;
-      --card-bg:rgba(34,34,40,0.92);
-      --btn-bg:#4A90E2;
-      --btn-bg-hover:#357abf;
-      --shadow:rgba(0,0,0,.18);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Space Grotesk',sans-serif;
-      background: linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
-      color:var(--text);
-      min-height:100vh;
-      position:relative;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
-      opacity: 0.07;
-      pointer-events: none;
-      z-index: 0;
-    }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:20px 40px;
-      background:#111;
-      box-shadow:0 1px 3px var(--shadow);
-      position:sticky;top:0;z-index:10;
-    }
-    .logo{
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:-.5px;
-      color: var(--accent);
-    }
-    .logo span.dot{
-      display:inline-block;
-      width:6px;height:6px;
-      background:var(--dot);
-      border-radius:50%;
-      margin-left:3px;
-      vertical-align: middle;
-    }
-    nav a{
-      margin-left:24px;
-      color:var(--text);
-      text-decoration:none;
-      font-weight:500;
-      transition: color 0.2s;
-    }
-    nav a.btn{
-      background:var(--btn-bg);
-      color:#fff;
-      padding:8px 20px;
-      border-radius:8px;
-      margin-left:32px;
-      transition: background 0.2s;
-    }
-    nav a:hover, nav a.btn:hover {
-      color: var(--accent);
-      background: #fff;
-    }
-    nav a.btn:hover {
-      color: var(--btn-bg);
-      background: #fff;
-    }
-    main{
-      max-width:1100px;
-      margin:0 auto;
-      padding:60px 20px
-    }
-    .hero{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:40px;
-      align-items:center;
-      margin-bottom:80px;
-      background: var(--card-bg);
-      border-radius: 20px;
-      box-shadow: 0 4px 16px var(--shadow);
-      padding: 40px 32px;
-    }
-    .hero h1{
-      font-size:40px;
-      font-weight:700;
-      line-height:1.1;
-      margin-bottom:16px;
-      color: #fff;
-    }
-    .hero p{
-      font-size:18px;
-      color:var(--muted);
-      margin-bottom:32px
-    }
-    .hero img{
-      width:100%;
-      border-radius:16px;
-      box-shadow: 0 2px 8px var(--shadow);
-      max-height:320px;
-      object-fit:cover;
-    }
-    .hero a{
-      background:var(--btn-bg);
-      color:#fff;
-      padding:12px 28px;
-      border-radius:8px;
-      font-weight:600;
-      text-decoration:none;
-      display:inline-block;
-      margin-top:8px;
-      transition: background 0.2s;
-    }
-    .hero a:hover{
-      background:var(--btn-bg-hover);
-    }
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:24px;
-      margin-bottom: 40px;
-    }
-    .card{
-      background:var(--card-bg);
-      border-radius:16px;
-      padding:32px;
-      box-shadow:0 2px 8px var(--shadow);
-      color: #fff;
-      text-align: left;
-    }
-    .card h3{margin-bottom:12px;font-size:20px}
-    .card p{color:var(--muted);font-size:15px}
-    #sponsor-section{
-      display:none;
-      margin-top:60px;
-      text-align:center;
-      background: var(--card-bg);
-      border-radius: 20px;
-      box-shadow: 0 4px 16px var(--shadow);
-      padding: 40px 32px;
-      color: #fff;
-    }
-    #sponsor-section h2{margin-bottom:20px}
-    .btn-sponsor{
-      padding:10px 22px;
-      background:var(--btn-bg);
-      color:#fff;
-      border:none;
-      border-radius:6px;
-      font-weight:600;
-      cursor:pointer;
-      margin-top:12px;
-      transition: background 0.2s;
-    }
-    .btn-sponsor:hover {
-      background: var(--btn-bg-hover);
-    }
-    table{
-      width:100%;
-      background:rgba(34,34,40,0.85);
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow:0 2px 8px var(--shadow);
-      border-collapse:collapse;
-      margin-bottom: 16px;
-    }
-    thead{
-      background:var(--btn-bg);
-      color:#fff
-    }
-    th,td{
-      padding:12px 16px;
-      text-align:left;
-      color: #fff;
-    }
-    tbody tr:nth-child(even){
-      background:rgba(255,255,255,0.04)
-    }
-    @media (max-width:900px){
-      .hero{grid-template-columns:1fr;gap:24px;padding:24px 8px;}
-      .hero img{max-height:220px;}
-    }
-    @media (max-width:600px){
-      header{padding:16px 8px;}
-      .logo{font-size:18px;}
-      main{padding:24px 4px;}
-      .hero{padding:16px 4px;}
-      .card{padding:18px;}
-      #sponsor-section{padding:18px;}
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InternBuddy | Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#4A90E2;
+  --dot:#FF4081;
+  --text:#fff;
+  --muted:#bbb;
+  --border:#444;
+  --card-bg:rgba(34,34,40,0.92);
+  --btn-bg:#4A90E2;
+  --btn-bg-hover:#357abf;
+  --shadow:rgba(0,0,0,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background: linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
+  color:var(--text);
+  min-height:100vh;
+  position:relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 40px;
+  background:#111;
+  box-shadow:0 1px 3px var(--shadow);
+  position:sticky;top:0;z-index:10;
+}
+.logo{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-.5px;
+  color: var(--accent);
+}
+.logo span.dot{
+  display:inline-block;
+  width:6px;height:6px;
+  background:var(--dot);
+  border-radius:50%;
+  margin-left:3px;
+  vertical-align: middle;
+}
+nav a{
+  margin-left:24px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:500;
+  transition: color 0.2s, background 0.2s;
+  padding:6px 0;
+  border-radius:8px;
+}
+nav a.btn{
+  background:var(--btn-bg);
+  color:#fff;
+  padding:8px 20px;
+  border-radius:8px;
+  margin-left:32px;
+  transition: background 0.2s;
+}
+nav a:hover, nav a.btn:hover {
+  color: var(--accent);
+  background: #fff;
+}
+nav a.btn:hover {
+  color: var(--btn-bg);
+  background: #fff;
+}
+
+/* Main layout */
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:60px 20px 40px;
+  position:relative;
+  z-index:1;
+}
+
+/* Hero */
+.hero{
+  display:grid;
+  grid-template-columns: minmax(0,1.05fr) minmax(0,0.95fr);
+  gap:40px;
+  align-items:center;
+  margin-bottom:60px;
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px var(--shadow);
+  padding: 34px 30px;
+}
+.hero-content h1{
+  font-size:34px;
+  font-weight:700;
+  line-height:1.1;
+  margin-bottom:12px;
+  color: #fff;
+}
+.hero-kicker{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.hero p{
+  font-size:16px;
+  color:var(--muted);
+  margin-bottom:22px;
+}
+.hero-cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.hero a.hero-btn{
+  background:var(--btn-bg);
+  color:#fff;
+  padding:11px 24px;
+  border-radius:10px;
+  font-weight:600;
+  text-decoration:none;
+  display:inline-block;
+  margin-top:4px;
+  transition: background 0.2s, transform 0.15s;
+}
+.hero a.hero-btn:hover{
+  background:var(--btn-bg-hover);
+  transform:translateY(-1px);
+}
+.hero-note{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* Hero “video” – custom illustrated animation */
+.hero-media{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  min-height:260px;
+  max-height:340px;
+  background:radial-gradient(circle at top left,#1f2933,#020617);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Fake video frame */
+.hero-video-frame{
+  position:relative;
+  width:100%;
+  height:100%;
+  padding:16px 18px 20px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Top “scene” area */
+.scene-area{
+  flex:1;
+  border-radius:12px;
+  background:linear-gradient(135deg,#111827,#020617);
+  border:1px solid rgba(148,163,184,0.35);
+  overflow:hidden;
+  position:relative;
+}
+
+/* Bookshelf / background bars */
+.scene-shelf{
+  position:absolute;
+  left:10%;
+  right:10%;
+  top:14%;
+  height:8px;
+  background:linear-gradient(90deg,#4b5563,#6b7280,#4b5563);
+  opacity:0.4;
+}
+.scene-shelf::before,
+.scene-shelf::after{
+  content:"";
+  position:absolute;
+  width:22px;
+  height:10px;
+  border-radius:3px;
+  background:#6b7280;
+  top:-10px;
+}
+.scene-shelf::before{left:6px;}
+.scene-shelf::after{right:12px;}
+
+/* Students at desks */
+.student-row{
+  position:absolute;
+  left:8%;
+  right:8%;
+  bottom:16%;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+}
+
+/* Desk */
+.desk{
+  width:80px;
+  height:34px;
+  border-radius:8px;
+  background:linear-gradient(180deg,#111827,#020617);
+  border:1px solid rgba(148,163,184,0.55);
+  position:relative;
+  overflow:hidden;
+}
+
+/* Person */
+.person-head{
+  position:absolute;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#e5e7eb;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  box-shadow:0 0 0 3px rgba(15,23,42,0.9);
+}
+.person-body{
+  position:absolute;
+  width:26px;
+  height:16px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#4A90E2,#22c55e);
+  top:4px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+/* Laptop on desk */
+.laptop{
+  position:absolute;
+  width:22px;
+  height:14px;
+  background:#0f172a;
+  border-radius:4px;
+  border:1px solid #4b5563;
+  bottom:7px;
+  left:50%;
+  transform:translateX(-50%);
+}
+.laptop::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:3px;
+  background:linear-gradient(135deg,#22c55e,#4A90E2);
+  opacity:0.6;
+}
+
+/* Chat bubbles */
+.chat-bubble{
+  position:absolute;
+  min-width:60px;
+  max-width:90px;
+  padding:6px 8px;
+  border-radius:10px;
+  background:rgba(15,23,42,0.96);
+  border:1px solid rgba(148,163,184,0.7);
+  font-size:10px;
+  color:#e5e7eb;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  animation:pulseBubble 6s infinite;
+}
+.chat-bubble span.dot{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#22c55e;
+}
+.chat-bubble.top-left{
+  top:16%;
+  left:14%;
+  animation-delay:0s;
+}
+.chat-bubble.top-right{
+  top:10%;
+  right:12%;
+  animation-delay:1.6s;
+}
+.chat-bubble.bottom-right{
+  bottom:10%;
+  right:16%;
+  animation-delay:3s;
+}
+
+/* Subtle animation for desks */
+.desk:nth-child(1){animation:floatDesk 5.5s ease-in-out infinite;}
+.desk:nth-child(2){animation:floatDesk 6.2s ease-in-out infinite 0.7s;}
+.desk:nth-child(3){animation:floatDesk 5.8s ease-in-out infinite 1.4s;}
+
+@keyframes floatDesk{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-3px);}
+  100%{transform:translateY(0);}
+}
+@keyframes pulseBubble{
+  0%,100%{transform:translateY(0);opacity:0.9;}
+  50%{transform:translateY(-4px);opacity:1;}
+}
+
+/* Bottom fake video controls */
+.video-controls{
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.play-pill{
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,0.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  color:#e5e7eb;
+}
+.timeline{
+  flex:1;
+  height:6px;
+  border-radius:999px;
+  background:rgba(15,23,42,0.9);
+  overflow:hidden;
+  position:relative;
+}
+.timeline-fill{
+  position:absolute;
+  height:100%;
+  width:40%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#4A90E2,#FF4081);
+  animation:progressBar 10s linear infinite;
+}
+@keyframes progressBar{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(100%);}
+}
+.video-label{
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* Feature cards */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+  margin-bottom: 40px;
+}
+.card{
+  background:var(--card-bg);
+  border-radius:16px;
+  padding:24px 22px;
+  box-shadow:0 2px 8px var(--shadow);
+  color: #fff;
+  text-align: left;
+  transition: transform 0.18s, box-shadow 0.18s, border 0.18s;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.45);
+  border-color:rgba(74,144,226,0.7);
+}
+.card h3{margin-bottom:8px;font-size:19px}
+.card p{color:var(--muted);font-size:14px;margin-bottom:4px;}
+.card-tag{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* Sponsor section */
+#sponsor-section{
+  display:none;
+  margin-top:40px;
+  text-align:center;
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px var(--shadow);
+  padding: 30px 26px;
+  color: #fff;
+}
+#sponsor-section h2{margin-bottom:10px;font-size:22px;}
+#sponsor-section p.helper{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:14px;
+}
+.btn-sponsor{
+  padding:10px 22px;
+  background:var(--btn-bg);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-sponsor:hover {
+  background: var(--btn-bg-hover);
+  transform:translateY(-1px);
+}
+table{
+  width:100%;
+  background:rgba(34,34,40,0.85);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 2px 8px var(--shadow);
+  border-collapse:collapse;
+  margin-bottom: 16px;
+}
+thead{
+  background:var(--btn-bg);
+  color:#fff
+}
+th,td{
+  padding:10px 12px;
+  text-align:left;
+  color: #fff;
+  font-size:13px;
+}
+tbody tr:nth-child(even){
+  background:rgba(255,255,255,0.04)
+}
+
+/* Terms link */
+.terms-link{
+  text-align:center;
+  margin:24px 0 32px;
+  font-weight:700;
+}
+.terms-link a{
+  color:#1e90ff;
+  text-decoration:none;
+}
+
+/* Responsive */
+@media (max-width:900px){
+  .hero{
+    grid-template-columns:1fr;
+    gap:24px;
+    padding:22px 16px 20px;
+  }
+  .hero-media{
+    min-height:220px;
+  }
+}
+@media (max-width:600px){
+  header{padding:16px 8px;}
+  .logo{font-size:18px;}
+  main{padding:32px 10px 28px;}
+  .card{padding:18px 16px;}
+  #sponsor-section{padding:22px 16px;}
+}
+</style>
 </head>
 <body>
 <header>
@@ -216,42 +502,177 @@
 </header>
 
 <main>
+  <!-- HERO -->
   <section class="hero">
-    <div>
-      <h1>Welcome back, ready to land your next role?</h1>
-      <p>Your personalised matches, applications and progress—all in one place.</p>
-      <a href="find-job.html">
-        Find your next role
-      </a>
+    <div class="hero-content">
+      <div class="hero-kicker" id="hero-kicker">Student career cockpit</div>
+      <h1 id="hero-heading">Welcome back, ready to land your next role?</h1>
+      <p id="hero-sub">
+        Your personalised matches, applications and interview prep — all in one place, designed for students and early-career talent.
+      </p>
+      <div class="hero-cta-row">
+        <a href="find-job.html" class="hero-btn">
+          Find your next role
+        </a>
+        <span class="hero-note" id="hero-note">
+          Tip: keep your profile updated to get sharper matches.
+        </span>
+      </div>
     </div>
-    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=60" alt="Career"/>
+
+    <!-- Custom illustrated “video” -->
+    <div class="hero-media">
+      <div class="hero-video-frame">
+        <div class="scene-area">
+          <div class="scene-shelf"></div>
+
+          <div class="student-row">
+            <!-- student 1 -->
+            <div class="desk">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+              <div class="laptop"></div>
+            </div>
+            <!-- student 2 -->
+            <div class="desk">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+              <div class="laptop"></div>
+            </div>
+            <!-- student 3 -->
+            <div class="desk">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+              <div class="laptop"></div>
+            </div>
+          </div>
+
+          <!-- Chat bubbles: library / interview vibe -->
+          <div class="chat-bubble top-left">
+            <span class="dot"></span>
+            <span>“Library grind before interviews.”</span>
+          </div>
+          <div class="chat-bubble top-right">
+            <span class="dot"></span>
+            <span>“Coffee chat with a recruiter at 3pm ☕”</span>
+          </div>
+          <div class="chat-bubble bottom-right">
+            <span class="dot"></span>
+            <span>“Just got an interview invite!”</span>
+          </div>
+        </div>
+
+        <div class="video-controls">
+          <div class="play-pill">▶</div>
+          <div class="timeline">
+            <div class="timeline-fill"></div>
+          </div>
+          <div class="video-label">Student life · internships · interviews</div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- FEATURE CARDS -->
   <section class="cards">
-    <div class="card"><h3>🔍 Cv Creator</h3><p>Creating a CV has never been easier</p></div>
-    <div class="card"><h3>📈 Application Tracker</h3><p>Track every step—from “Applied” to “Offer”.</p></div>
-    <div class="card"><h3>📅 Interview Prep</h3><p>Mock interviews, tips and company insights—ready when you are.</p></div>
+    <a href="cvcreator.html" class="card-link">
+      <div class="card">
+        <h3>🔍 AI CV Creator</h3>
+        <p>Create a clean, compact CV in minutes — optimised for internships, grad schemes and junior roles.</p>
+        <div class="card-tag">Great starting point if you’re not sure what to write.</div>
+      </div>
+    </a>
+
+    <a href="application-tracker.html" class="card-link">
+      <div class="card">
+        <h3>📈 Application Tracker</h3>
+        <p>Keep every application, deadline and interview in one simple tracker — never lose a role again.</p>
+        <div class="card-tag">Perfect during peak application season.</div>
+      </div>
+    </a>
+
+    <a href="interview-prep.html" class="card-link">
+      <div class="card">
+        <h3>📅 Interview Prep</h3>
+        <p>Practice answers, note questions and walk into interviews feeling prepared, not panicked.</p>
+        <div class="card-tag">Turn nerves into a plan.</div>
+      </div>
+    </a>
   </section>
 
+  <!-- SPONSOR SECTION -->
   <section id="sponsor-section">
-    <h2>Find your next sponsor-friendly company</h2>
+    <h2>Sponsorship-friendly companies</h2>
+    <p class="helper">
+      Based on your profile, here are a few companies known to sponsor visas for technical and business roles.
+    </p>
     <table>
-      <thead><tr><th>Company</th><th>Location</th><th>Roles</th><th>Sponsor Type</th></tr></thead>
-      <tbody>
-        <tr><td>Google</td><td>Dublin, London, Zurich</td><td>SWE, Data, PM</td><td>EU Blue Card</td></tr>
-        <tr><td>Stripe</td><td>Dublin, Amsterdam</td><td>Backend, Infra</td><td>H-1B / EU Blue Card</td></tr>
-        <tr><td>Amazon</td><td>Berlin, Luxembourg</td><td>Full-stack, ML</td><td>EU Blue Card</td></tr>
-        <tr><td>Shopify</td><td>Remote EU</td><td>Frontend, Mobile</td><td>EU Blue Card</td></tr>
-      </tbody>
+      <thead>
+        <tr>
+          <th>Company</th><th>Location</th><th>Typical roles</th><th>Sponsor type</th>
+        </tr>
+      </thead>
+      <tbody id="sponsor-body"></tbody>
     </table>
     <button class="btn-sponsor" onclick="location.href='all-sponsor-jobs.html'">
-      View All Sponsor Jobs
+      View all sponsor-friendly roles
     </button>
+  </section>
 </main>
 
+<div class="terms-link">
+  <a href="terms-and-conditions.html">Terms and Conditions</a>
+</div>
+
 <script>
-  const profile = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
-  if (profile.workAuth === 'Need sponsorship') {
+  // Merge signup + profile so homepage always reflects latest changes
+  const signupData  = JSON.parse(localStorage.getItem('internbuddy-signup')  || '{}');
+  const profileData = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
+  const user = { ...signupData, ...profileData };
+
+  // Personalised hero heading + subtext
+  const heroHeading = document.getElementById('hero-heading');
+  const heroKicker  = document.getElementById('hero-kicker');
+  const heroSub     = document.getElementById('hero-sub');
+  const heroNote    = document.getElementById('hero-note');
+
+  if (user.firstName) {
+    heroHeading.textContent = `Welcome back, ${user.firstName}! Ready to land your next role?`;
+  }
+
+  if (user.studyField) {
+    heroKicker.textContent = `${user.studyField} · Student career cockpit`;
+  }
+
+  if (user.roleType || user.targetIndustries) {
+    const roleText = user.roleType ? user.roleType.toLowerCase() : 'roles';
+    const indText  = user.targetIndustries || 'top companies';
+    heroSub.textContent =
+      `We’ll help you stay on top of applications for ${roleText} across ${indText}. One hub for your search.`;
+  }
+
+  if (user.locations) {
+    heroNote.textContent =
+      `Matches are currently based on: ${user.locations}. Update your profile to tweak this.`;
+  }
+
+  // Sponsor section logic – only show if user needs sponsorship
+  const sponsors = [
+    {company:"Google",     location:"London, Dublin, Zurich",     roles:"Software, Data, PM",      type:"UK & EU visa routes"},
+    {company:"Amazon",     location:"London, Berlin, Luxembourg", roles:"SDE, Cloud, Ops",        type:"Various work visas"},
+    {company:"Bloomberg",  location:"London",                     roles:"Software, Analytics",     type:"UK Skilled Worker"},
+    {company:"JP Morgan",  location:"London",                     roles:"Technology, Finance",     type:"UK Skilled Worker"}
+  ];
+
+  if (user.workAuth && user.workAuth.toLowerCase().includes('sponsor')) {
+    const tbody = document.getElementById('sponsor-body');
+    tbody.innerHTML = sponsors.map(s => `
+      <tr>
+        <td>${s.company}</td>
+        <td>${s.location}</td>
+        <td>${s.roles}</td>
+        <td>${s.type}</td>
+      </tr>`).join('');
     document.getElementById('sponsor-section').style.display = 'block';
   }
 </script>

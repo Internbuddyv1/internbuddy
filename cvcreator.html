@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InternBuddy | AI CV Creator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+:root{
+  --accent:#2563eb;
+  --dot:#f97316;
+  --text:#fff;
+  --muted:#9ca3af;
+  --card-bg:rgba(13,16,27,0.96);
+  --btn-bg:#2563eb;
+  --btn-bg-hover:#1d4ed8;
+  --shadow:rgba(0,0,0,.28);
+  --border:#3f455b;
+  --success:#22c55e;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background: radial-gradient(circle at top left,#020617 0%,#020617 35%,#0b1220 100%);
+  color:var(--text);
+  min-height:100vh;
+  margin:0;
+}
+
+/* Header */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 32px;
+  background:#020617;
+  box-shadow:0 1px 4px var(--shadow);
+  position:sticky;
+  top:0;
+  z-index:10;
+  flex-wrap:wrap;
+}
+.logo{
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  color: var(--accent);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-transform:uppercase;
+}
+.logo span.dot{
+  width:7px;
+  height:7px;
+  background:var(--dot);
+  border-radius:50%;
+  display:inline-block;
+}
+nav{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:18px;
+}
+nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:500;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid transparent;
+  transition:.18s ease;
+}
+nav a:hover{
+  border-color:rgba(148,163,184,0.35);
+  color:#e5e7eb;
+}
+nav a.btn{
+  background:var(--btn-bg);
+  padding:8px 18px;
+}
+nav a.btn:hover{
+  background:var(--btn-bg-hover);
+  color:#fff;
+}
+
+/* Main layout */
+main{
+  max-width:1080px;
+  margin:0 auto;
+  padding:28px 16px 40px;
+}
+
+.page-intro{
+  max-width:620px;
+  margin:0 auto 22px;
+  text-align:center;
+}
+.page-intro h1{
+  font-size:26px;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.tagline{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* Grid */
+.grid{
+  display:grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+  gap:18px;
+  align-items:flex-start;
+}
+@media (max-width:900px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Card */
+.card{
+  background:var(--card-bg);
+  border-radius:16px;
+  padding:18px 16px;
+  box-shadow:0 18px 45px rgba(0,0,0,0.6);
+  border:1px solid rgba(75,85,99,0.4);
+}
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:8px;
+  margin-bottom:12px;
+}
+.card-title{
+  font-size:15px;
+  font-weight:600;
+}
+.card-subtitle{
+  font-size:11px;
+  color:var(--muted);
+}
+.card-pill{
+  font-size:10px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(148,163,184,0.12);
+  color:#e5e7eb;
+}
+
+/* Form */
+label{
+  display:block;
+  margin-bottom:4px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:#c7d2fe;
+}
+.section-label{
+  margin-top:6px;
+  font-size:11px;
+  font-weight:600;
+  color:#e5e7eb;
+  border-top:1px solid rgba(55,65,81,0.8);
+  padding-top:8px;
+}
+input, textarea, select{
+  width:100%;
+  padding:7px 11px;
+  border-radius:9px;
+  background:#020617;
+  border:1px solid #1f2937;
+  color:#e5e7eb;
+  font-family:inherit;
+  font-size:12px;
+  margin-bottom:10px;
+}
+input::placeholder,
+textarea::placeholder{
+  color:#6b7280;
+}
+textarea{
+  resize:vertical;
+  min-height:52px;
+}
+small.helper{
+  display:block;
+  margin:-4px 0 8px;
+  font-size:10px;
+  color:var(--muted);
+}
+
+.row{
+  display:flex;
+  gap:10px;
+}
+.row > div{flex:1;}
+
+/* Experience input entry */
+.exp-entry{
+  border:1px solid rgba(31,41,55,0.9);
+  border-radius:9px;
+  padding:8px 8px 6px;
+  margin-bottom:8px;
+  background:rgba(15,23,42,0.85);
+}
+.exp-entry-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+  font-size:11px;
+  color:#cbd5f5;
+}
+.exp-remove{
+  background:none;
+  border:none;
+  color:#9ca3af;
+  font-size:10px;
+  cursor:pointer;
+  padding:0;
+}
+.exp-remove:hover{
+  color:#fca5a5;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-ghost{
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:12px;
+  border:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.18s ease;
+  white-space:nowrap;
+}
+.btn-primary{
+  background:var(--btn-bg);
+  color:#fff;
+}
+.btn-primary:hover{
+  background:var(--btn-bg-hover);
+}
+.btn-ghost{
+  background:transparent;
+  color:#e5e7eb;
+  border:1px solid rgba(148,163,184,0.5);
+}
+.btn-ghost:hover{
+  border-color:#e5e7eb;
+}
+
+/* Alert */
+#alertContainer{
+  max-width:1080px;
+  margin:0 auto 10px;
+}
+.alert{
+  padding:8px 10px;
+  border-radius:9px;
+  margin-bottom:4px;
+  font-size:11px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.alert-success{
+  background:rgba(34,197,94,0.08);
+  border:1px solid rgba(34,197,94,0.7);
+  color:#bbf7d0;
+}
+.alert-warning{
+  background:rgba(245,158,11,0.08);
+  border:1px solid rgba(245,158,11,0.8);
+  color:#fed7aa;
+}
+.alert-error{
+  background:rgba(239,68,68,0.12);
+  border:1px solid rgba(239,68,68,0.8);
+  color:#fecaca;
+}
+
+/* CV preview shell */
+.cv-shell{
+  background:#f9fafb;
+  border-radius:14px;
+  padding:12px 12px 14px;
+  border:1px solid #e5e7eb;
+  min-height:220px;
+  max-height:78vh;
+  overflow:auto;
+  display:flex;
+  justify-content:center;
+}
+.cv-inner-wrapper{
+  max-width:620px; /* narrower, more “page-like” */
+  width:100%;
+}
+.cv-placeholder{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#9ca3af;
+  font-size:12px;
+  text-align:center;
+  padding:18px;
+}
+.cv-output-inner{
+  font-family:'Space Grotesk',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:#111827;
+  font-size:10px; /* smaller for a compact CV */
+  line-height:1.35;
+}
+
+/* CV layout */
+.cv-header{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  border-bottom:1px solid #e5e7eb;
+  padding-bottom:6px;
+  margin-bottom:7px;
+}
+.cv-name{
+  font-size:16px;
+  font-weight:700;
+}
+.cv-role{
+  font-size:10px;
+  color:#4b5563;
+  font-weight:500;
+}
+.cv-contact{
+  font-size:9px;
+  color:#6b7280;
+  text-align:right;
+}
+.cv-section-title{
+  font-size:9px;
+  letter-spacing:0.18em;
+  color:#6b7280;
+  font-weight:700;
+  margin:6px 0 3px;
+}
+.cv-section-body{
+  font-size:10px;
+  color:#111827;
+}
+.cv-summary{
+  background:#f3f4f6;
+  border-radius:6px;
+  padding:6px 8px;
+}
+.cv-two-col{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:9px;
+  margin-top:5px;
+}
+@media (max-width:600px){
+  .cv-two-col{
+    grid-template-columns:1fr;
+  }
+}
+.cv-role-block{
+  margin-bottom:6px;
+}
+.cv-role-header{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  font-weight:600;
+}
+.cv-role-meta{
+  font-size:9px;
+  color:#6b7280;
+}
+.cv-bullets{
+  margin:3px 0 0 13px;
+  padding-left:4px;
+}
+.cv-bullets li{
+  margin-bottom:2px;
+}
+.cv-tag-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:4px;
+}
+.cv-tag{
+  font-size:9px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:#e5e7eb;
+  color:#111827;
+  font-weight:600;
+}
+
+/* Preview actions */
+.preview-actions{
+  margin-top:8px;
+  display:flex;
+  justify-content:flex-end;
+  gap:6px;
+}
+
+/* Footer note */
+.footer-note{
+  margin-top:12px;
+  font-size:10px;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    INTERNBUDDY <span class="dot"></span>
+  </div>
+  <nav>
+    <a href="homepage.html">Dashboard</a>
+    <a href="edit-profile.html">Profile</a>
+    <a href="index.html" class="btn">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <section class="page-intro">
+    <h1>AI CV Creator</h1>
+    <p class="tagline">
+      Minimal input. Compact, employer–ready CV with impact-focused bullets and clean, professional formatting.
+    </p>
+  </section>
+
+  <div id="alertContainer"></div>
+
+  <section class="grid">
+    <!-- INPUT SIDE -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Smart Inputs</div>
+          <div class="card-subtitle">You provide the facts. The AI fills in what hiring managers expect to see.</div>
+        </div>
+        <span class="card-pill">AI-composed CV</span>
+      </div>
+
+      <!-- Personal -->
+      <div class="row">
+        <div>
+          <label for="name">Full Name *</label>
+          <input id="name" type="text" placeholder="Jane Doe">
+        </div>
+        <div>
+          <label for="role">Target Role *</label>
+          <input id="role" type="text" placeholder="Product Designer / Software Engineer">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="email">Email *</label>
+          <input id="email" type="email" placeholder="you@email.com">
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" placeholder="+44 7123 456 789">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="location">Location</label>
+          <input id="location" type="text" placeholder="London, UK">
+        </div>
+        <div>
+          <label for="linkedin">LinkedIn / Portfolio</label>
+          <input id="linkedin" type="text" placeholder="linkedin.com/in/you">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="experienceYears">Years of Experience</label>
+          <input id="experienceYears" type="number" min="0" placeholder="3">
+        </div>
+        <div>
+          <label for="seniority">Seniority</label>
+          <select id="seniority">
+            <option value="junior">Junior</option>
+            <option value="mid" selected>Mid-level</option>
+            <option value="senior">Senior</option>
+            <option value="lead">Lead / Manager</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="industry">Industry / Domain</label>
+      <input id="industry" type="text" placeholder="FinTech, SaaS, E-commerce, HealthTech">
+
+      <label for="coreSkills">Core Skills (comma separated)</label>
+      <textarea id="coreSkills" placeholder="React, TypeScript, Node.js, UX collaboration"></textarea>
+      <small class="helper">We’ll turn this into ATS-friendly keywords and use them in the bullets.</small>
+
+      <!-- Work Experience (multi-role) -->
+      <div class="section-label">Work Experience</div>
+      <div id="experienceInputs"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:2px;margin-bottom:8px;">
+        <button class="btn-ghost" type="button" onclick="addExperienceInput()">
+          + Add another role
+        </button>
+      </div>
+
+      <!-- Education (minimal) -->
+      <div class="section-label">Education</div>
+      <div class="row">
+        <div>
+          <label for="eduDegree">Degree</label>
+          <input id="eduDegree" type="text" placeholder="BSc Computer Science">
+        </div>
+        <div>
+          <label for="eduInstitution">Institution</label>
+          <input id="eduInstitution" type="text" placeholder="University of Example">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="eduYear">Graduation Year</label>
+          <input id="eduYear" type="text" placeholder="2024">
+        </div>
+        <div>
+          <label for="eduLocation">Location</label>
+          <input id="eduLocation" type="text" placeholder="City, Country">
+        </div>
+      </div>
+
+      <!-- Focus / extras -->
+      <label for="focus">What do you want to be known for?</label>
+      <textarea id="focus" placeholder="Shipping polished UI, leading squads, improving conversion, mentoring juniors..."></textarea>
+
+      <label for="extraHints">Optional extra context</label>
+      <textarea id="extraHints" placeholder="Onboarding, payments, NPS, refactoring legacy, leading discovery sessions..."></textarea>
+
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+        <button class="btn-ghost" type="button" onclick="prefillExample()">Use example</button>
+        <button class="btn-primary" type="button" onclick="generateAICV()">
+          ⚡ Generate high-end CV
+        </button>
+      </div>
+    </div>
+
+    <!-- PREVIEW SIDE -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Live CV Preview</div>
+            <div class="card-subtitle">Compact layout optimised for hiring managers and ATS.</div>
+          </div>
+          <span class="card-pill" id="templateLabel">Template: Compact Executive</span>
+        </div>
+
+        <div class="cv-shell" id="cvShell">
+          <div class="cv-inner-wrapper">
+            <div class="cv-placeholder" id="placeholder">
+              Fill out the left panel and click <strong>“Generate high-end CV”</strong> to see your AI CV here.
+            </div>
+            <div id="cvContent" class="cv-output-inner" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="preview-actions">
+          <button class="btn-ghost" type="button" onclick="regenerateWithVariation()">
+            🎲 Variation
+          </button>
+          <button class="btn-primary" type="button" onclick="exportToPDF()">
+            ⬇ Download PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Generated content is a starting point. Always verify details and tweak wording for your voice before sending.
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ---------- GLOBAL STATE ---------- */
+let lastData = null;
+let variationSeed = 0;
+
+/* ---------- PREFILL FROM PROFILE (Edit Profile → CV) ---------- */
+function prefillFromProfile(){
+  const signup  = JSON.parse(localStorage.getItem('internbuddy-signup')  || '{}');
+  const profile = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
+  const data = { ...signup, ...profile };
+
+  function setIfEmpty(id, value){
+    if(!value) return;
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(!el.value || el.value.trim() === ''){
+      el.value = value;
+    }
+  }
+
+  const fullName = [data.firstName, data.lastName].filter(Boolean).join(' ').trim();
+  const headline = data.headline || '';
+  const study    = data.studyField || '';
+  const locations = data.locations || '';
+  const industries = data.targetIndustries || '';
+  const roleType = data.roleType || '';
+
+  // Basic identity
+  setIfEmpty('name', fullName);
+  // Target role guess
+  let guessedRole = headline;
+  if(!guessedRole && study){
+    guessedRole = `${study} student`.trim();
+  }
+  if(!guessedRole && roleType){
+    guessedRole = roleType;
+  }
+  setIfEmpty('role', guessedRole);
+
+  setIfEmpty('email', data.email);
+  if(data.phone) setIfEmpty('phone', data.phone);
+  setIfEmpty('location', locations);
+  setIfEmpty('linkedin', data.linkedin || data.portfolio);
+
+  // Industry / domain from target industries or study field
+  const domain = industries || study;
+  setIfEmpty('industry', domain);
+
+  // Years of experience if you decide to store it later
+  if(data.experienceYears){
+    setIfEmpty('experienceYears', data.experienceYears);
+  }
+
+  // Focus line – nice to seed something instead of blank
+  const focusEl = document.getElementById('focus');
+  if(focusEl && !focusEl.value.trim()){
+    if(study || industries){
+      focusEl.value = `building experience in ${industries || study}, and delivering useful, real-world outcomes.`;
+    }
+  }
+}
+
+/* ---------- HELPERS ---------- */
+function showAlert(message, type='success') {
+  const container = document.getElementById('alertContainer');
+  container.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'alert ' + (
+    type === 'success' ? 'alert-success' :
+    type === 'warning' ? 'alert-warning' :
+    'alert-error'
+  );
+  div.textContent = message;
+  container.appendChild(div);
+  setTimeout(() => {
+    if (container.contains(div)) container.removeChild(div);
+  }, 3000);
+}
+
+function parseList(str, splitterRegex){
+  if(!str) return [];
+  return str.split(splitterRegex).map(s=>s.trim()).filter(Boolean);
+}
+
+function capitalise(str){
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+/* ---------- EXPERIENCE INPUT UI ---------- */
+function addExperienceInput(){
+  const container = document.getElementById('experienceInputs');
+  const index = container.children.length + 1;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exp-entry';
+
+  wrapper.innerHTML = `
+    <div class="exp-entry-header">
+      <span>Role ${index}</span>
+      <button type="button" class="exp-remove" onclick="removeExperienceEntry(this)">Remove</button>
+    </div>
+    <div class="row">
+      <div>
+        <label style="margin-top:0;">Job Title</label>
+        <input type="text" class="exp-title" placeholder="e.g. Software Engineer">
+      </div>
+      <div>
+        <label style="margin-top:0;">Company</label>
+        <input type="text" class="exp-company" placeholder="e.g. Company XYZ">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>Dates</label>
+        <input type="text" class="exp-dates" placeholder="2021 – Present">
+      </div>
+      <div>
+        <label>Location / Mode</label>
+        <input type="text" class="exp-location" placeholder="London / Remote">
+      </div>
+    </div>
+    <label>1–3 short points about this role</label>
+    <textarea class="exp-notes" placeholder="- Built X\n- Improved Y\n- Worked with Z"></textarea>
+  `;
+
+  container.appendChild(wrapper);
+  updateExperienceLabels();
+}
+
+function removeExperienceEntry(btn){
+  const container = document.getElementById('experienceInputs');
+  if(container.children.length === 1){
+    showAlert('At least one role is recommended. Edit instead of removing.', 'warning');
+    return;
+  }
+  const entry = btn.closest('.exp-entry');
+  container.removeChild(entry);
+  updateExperienceLabels();
+}
+
+function updateExperienceLabels(){
+  const entries = Array.from(document.querySelectorAll('.exp-entry'));
+  entries.forEach((entry, idx) => {
+    const label = entry.querySelector('.exp-entry-header span');
+    if(label) label.textContent = `Role ${idx+1}`;
+  });
+}
+
+/* ---------- INPUT COLLECTION ---------- */
+function collectInputData() {
+  const experienceEntries = Array.from(document.querySelectorAll('.exp-entry')).map(entry => ({
+    title: entry.querySelector('.exp-title').value.trim(),
+    company: entry.querySelector('.exp-company').value.trim(),
+    dates: entry.querySelector('.exp-dates').value.trim(),
+    location: entry.querySelector('.exp-location').value.trim(),
+    notes: parseList(entry.querySelector('.exp-notes').value, /\n|;/)
+  }));
+
+  return {
+    name: document.getElementById('name').value.trim(),
+    role: document.getElementById('role').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    location: document.getElementById('location').value.trim(),
+    linkedin: document.getElementById('linkedin').value.trim(),
+    experienceYears: document.getElementById('experienceYears').value.trim(),
+    seniority: document.getElementById('seniority').value,
+    industry: document.getElementById('industry').value.trim(),
+    coreSkills: parseList(document.getElementById('coreSkills').value, /,|\n|;/),
+
+    experiences: experienceEntries,
+
+    eduDegree: document.getElementById('eduDegree').value.trim(),
+    eduInstitution: document.getElementById('eduInstitution').value.trim(),
+    eduYear: document.getElementById('eduYear').value.trim(),
+    eduLocation: document.getElementById('eduLocation').value.trim(),
+
+    focus: document.getElementById('focus').value.trim(),
+    extraHints: document.getElementById('extraHints').value.trim()
+  };
+}
+
+function validateMinimal(data){
+  if(!data.name || !data.role || !data.email){
+    showAlert('Please provide at least Name, Target Role and Email.', 'warning');
+    return false;
+  }
+  return true;
+}
+
+/* ---------- “AI” GENERATION LOGIC ---------- */
+function generateSummary(data){
+  const years = data.experienceYears ? `${data.experienceYears}+ years` : 'proven';
+  const seniorityLabel = {
+    junior:'emerging',
+    mid:'experienced',
+    senior:'senior',
+    lead:'lead'
+  }[data.seniority || 'mid'];
+
+  const industry = data.industry || 'digital products';
+  const focusSnippet = data.focus
+    ? ` with a focus on ${data.focus.toLowerCase()}`
+    : '';
+
+  const baseLines = [
+    `Known for turning ambiguous problems into clear, outcome-focused work that ships.`,
+    `Balances quality and speed, communicating trade-offs clearly to stakeholders.`,
+    `Combines hands-on execution with structured thinking and concise communication.`
+  ];
+
+  const core = data.coreSkills.length
+    ? `Core strengths include ${data.coreSkills.slice(0,6).join(', ')}.`
+    : '';
+
+  return (
+    `${capitalise(seniorityLabel)} ${data.role.toLowerCase()} with ${years} of experience across ${industry}.${focusSnippet} ` +
+    `${baseLines[variationSeed % baseLines.length]} ` +
+    (core ? core : '')
+  ).trim();
+}
+
+function enhanceNote(note){
+  let text = note;
+  text = text.replace(/^[-•]\s*/,''); // strip bullet
+  text = text.replace(/\bi\b/g,'I');
+  if(!/[.!?]$/.test(text)) text += '.';
+
+  const templates = [
+    `Took ownership of ${text}`,
+    `Contributed to ${text}`,
+    `Played a key role in ${text}`,
+    `${text.replace(/^./, c => c.toUpperCase())}`
+  ];
+  return templates[variationSeed % templates.length];
+}
+
+function generateExperienceBlocks(data){
+  const yearsNum = parseInt(data.experienceYears || '0',10);
+  const isJunior = isNaN(yearsNum) || yearsNum <= 2;
+
+  const baseVerbs = [
+    'Led','Owned','Delivered','Implemented','Designed',
+    'Optimised','Collaborated on','Partnered with stakeholders to'
+  ];
+  const impactPhrases = [
+    'improving key metrics by 10–20%.',
+    'reducing friction across core journeys.',
+    'increasing customer satisfaction and adoption.',
+    'supporting faster, more predictable delivery.',
+    'strengthening reliability and maintainability.'
+  ];
+
+  const skillPhrase = data.coreSkills.length
+    ? `Leveraged ${data.coreSkills.slice(0,3).join(', ')} to solve real user and business problems.`
+    : `Applied modern tools and practices to deliver maintainable, well-structured solutions.`;
+
+  const experiences = (data.experiences && data.experiences.length)
+    ? data.experiences
+    : [{
+        title: data.role || 'Professional Experience',
+        company: data.industry ? `${data.industry.split(/[ ,]/)[0]} Co.` : 'Organisation',
+        dates: isJunior ? 'Recent role' : 'Most recent role',
+        location: data.location || 'Hybrid',
+        notes: []
+      }];
+
+  return experiences.map((exp, idx) => {
+    const defaultCompany = data.industry ? `${data.industry.split(/[ ,]/)[0]} Co.` : 'Organisation';
+    const verb = baseVerbs[(variationSeed + idx) % baseVerbs.length];
+    const impact = impactPhrases[(variationSeed + idx) % impactPhrases.length];
+
+    const baseBullet = `${verb} end-to-end initiatives from discovery to implementation, ${impact}`;
+
+    const notesBullets = (exp.notes || []).slice(0,2).map(enhanceNote);
+
+    const bullets = [
+      baseBullet,
+      skillPhrase,
+      ...notesBullets
+    ];
+
+    return {
+      title: exp.title || data.role || 'Professional Experience',
+      company: exp.company || defaultCompany,
+      dates: exp.dates || (idx === 0 ? (isJunior ? 'Recent role' : 'Most recent role') : 'Earlier role'),
+      location: exp.location || data.location || 'Hybrid',
+      bullets
+    };
+  });
+}
+
+function generateSkillsSection(data){
+  const technical = data.coreSkills;
+  const softDefault = [
+    'Stakeholder communication',
+    'Ownership & accountability',
+    'Problem solving',
+    'Collaboration',
+    'Continuous learning',
+    'Time management'
+  ];
+  const soft = softDefault.slice(0,4 + (variationSeed % 2));
+  return { technical, soft };
+}
+
+function generateExtras(data){
+  const extras = [];
+  if(parseInt(data.experienceYears || '0',10) >= 2){
+    extras.push('Key contributor to at least one high-visibility initiative with cross-functional impact.');
+  }
+  if(data.extraHints.toLowerCase().includes('mentor')){
+    extras.push('Provided informal mentoring and support to junior colleagues and interns.');
+  }
+  extras.push('Recognised for reliability, clear communication and willingness to own outcomes.');
+  return extras;
+}
+
+/* ---------- CV RENDERING ---------- */
+function renderCV(data){
+  const cvContent = document.getElementById('cvContent');
+  const placeholder = document.getElementById('placeholder');
+
+  const summary = generateSummary(data);
+  const experienceBlocks = generateExperienceBlocks(data);
+  const skills = generateSkillsSection(data);
+  const extras = generateExtras(data);
+
+  const contacts = [
+    data.email,
+    data.phone,
+    data.location,
+    data.linkedin
+  ].filter(Boolean).join(' · ');
+
+  const techTags = (skills.technical.length ? skills.technical : ['Impact-driven', 'Cross-functional'])
+    .slice(0,9)
+    .map(s=>`<span class="cv-tag">${s}</span>`)
+    .join('');
+
+  const softTags = skills.soft.map(s=>`<span class="cv-tag">${s}</span>`).join('');
+
+  const experienceHTML = experienceBlocks.map(b => `
+    <div class="cv-role-block">
+      <div class="cv-role-header">
+        <span>${b.title}</span>
+        <span>${b.company}</span>
+      </div>
+      <div class="cv-role-meta">${b.dates} · ${b.location}</div>
+      <ul class="cv-bullets">
+        ${b.bullets.map(x=>`<li>${x}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+  const eduContent = (data.eduDegree || data.eduInstitution) ? `
+    <div class="cv-role-block">
+      <div class="cv-role-header">
+        <span>${data.eduDegree || 'Degree'}</span>
+        <span>${data.eduInstitution || ''}</span>
+      </div>
+      <div class="cv-role-meta">
+        ${(data.eduYear || '')} ${data.eduYear && data.eduLocation ? '· ' : ''}${data.eduLocation || ''}
+      </div>
+    </div>
+  ` : `
+    <p class="cv-section-body" style="font-size:9px;">
+      Add your degree here (e.g. BSc Computer Science, University XYZ, 2024).
+    </p>
+  `;
+
+  const extrasHTML = extras.length
+    ? `<ul class="cv-bullets">${extras.map(x=>`<li>${x}</li>`).join('')}</ul>`
+    : '<p class="cv-section-body" style="font-size:9px;">Add any awards, talks or additional activities.</p>';
+
+  const html = `
+    <div>
+      <div class="cv-header">
+        <div>
+          <div class="cv-name">${data.name}</div>
+          <div class="cv-role">${data.role}</div>
+        </div>
+        <div class="cv-contact">
+          ${contacts.replace(/·/g,'•')}
+        </div>
+      </div>
+
+      <div>
+        <div class="cv-section-title">PROFILE</div>
+        <div class="cv-section-body cv-summary">
+          ${summary}
+        </div>
+      </div>
+
+      <div class="cv-two-col">
+        <div>
+          <div class="cv-section-title">EXPERIENCE</div>
+          <div class="cv-section-body">
+            ${experienceHTML}
+          </div>
+        </div>
+
+        <div>
+          <div class="cv-section-title">KEY SKILLS</div>
+          <div class="cv-section-body">
+            <strong>Core skills</strong>
+            <div class="cv-tag-row">
+              ${techTags}
+            </div>
+            <strong style="display:block; margin-top:6px;">Ways of working</strong>
+            <div class="cv-tag-row">
+              ${softTags}
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <div class="cv-section-title">EDUCATION</div>
+            <div class="cv-section-body">
+              ${eduContent}
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <div class="cv-section-title">EXTRAS</div>
+            <div class="cv-section-body">
+              ${extrasHTML}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  placeholder.style.display = 'none';
+  cvContent.style.display = 'block';
+  cvContent.innerHTML = html;
+}
+
+/* ---------- PUBLIC ACTIONS ---------- */
+function generateAICV(){
+  const data = collectInputData();
+  if(!validateMinimal(data)) return;
+  lastData = data;
+  variationSeed = Math.floor(Math.random()*1000);
+
+  showAlert('Generating your compact, professional CV…', 'success');
+  renderCV(data);
+}
+
+function regenerateWithVariation(){
+  if(!lastData){
+    showAlert('Generate a CV first, then you can shuffle variations.', 'warning');
+    return;
+  }
+  variationSeed = (variationSeed + 1) % 9999;
+  renderCV(lastData);
+  showAlert('New variation generated.', 'success');
+}
+
+function exportToPDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'mm', format:'a4'});
+  const cvContent = document.getElementById('cvContent');
+  if(!cvContent || cvContent.style.display === 'none'){
+    showAlert('Please generate a CV before downloading.', 'warning');
+    return;
+  }
+  html2canvas(cvContent, {scale:2}).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 210;
+    const pageHeight = 295;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while(heightLeft > 0){
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const name = (lastData && lastData.name) || 'CV';
+    doc.save(`${name.replace(/\s+/g,'_')}_CV.pdf`);
+    showAlert('PDF downloaded.', 'success');
+  });
+}
+
+/* ---------- EXAMPLE FILL ---------- */
+function prefillExample(){
+  // basic
+  document.getElementById('name').value = 'Alex Johnson';
+  document.getElementById('role').value = 'Senior Product Designer';
+  document.getElementById('email').value = 'alex.johnson@example.com';
+  document.getElementById('phone').value = '+44 7123 456 789';
+  document.getElementById('location').value = 'London, UK';
+  document.getElementById('linkedin').value = 'linkedin.com/in/alexjohnson';
+  document.getElementById('experienceYears').value = '7';
+  document.getElementById('seniority').value = 'senior';
+  document.getElementById('industry').value = 'FinTech, SaaS';
+  document.getElementById('coreSkills').value = 'User research, Figma, Prototyping, Design systems, Stakeholder workshops, Experimentation';
+
+  // ensure at least one experience entry exists
+  const container = document.getElementById('experienceInputs');
+  if(container.children.length === 0) addExperienceInput();
+  const firstExp = container.querySelector('.exp-entry');
+  if(firstExp){
+    firstExp.querySelector('.exp-title').value = 'Senior Product Designer';
+    firstExp.querySelector('.exp-company').value = 'NovaPay';
+    firstExp.querySelector('.exp-dates').value = '2020 – Present';
+    firstExp.querySelector('.exp-location').value = 'London, Hybrid';
+    firstExp.querySelector('.exp-notes').value =
+      '- Led end-to-end redesign of onboarding\n- Collaborated closely with PM and engineers\n- Introduced design system foundations';
+  }
+
+  // education
+  document.getElementById('eduDegree').value = 'BA (Hons) Interaction Design';
+  document.getElementById('eduInstitution').value = 'University of Leeds';
+  document.getElementById('eduYear').value = '2018';
+  document.getElementById('eduLocation').value = 'Leeds, UK';
+
+  document.getElementById('focus').value =
+    'shipping end-to-end product experiences, simplifying complex flows, balancing craft and delivery, mentoring designers.';
+  document.getElementById('extraHints').value =
+    'Onboarding, payments, activation, NPS, design tokens, workshops, usability testing.';
+
+  showAlert('Example data filled. Click "Generate high-end CV".', 'success');
+}
+
+/* ---------- INIT ---------- */
+window.addEventListener('DOMContentLoaded', () => {
+  // Pull from profile first
+  prefillFromProfile();
+  // Ensure at least one experience block
+  addExperienceInput();
+});
+</script>
+<div class="terms-link" style="text-align:center;margin:24px 0;font-weight:700;">
+  <a href="terms-and-conditions.html" style="color:#1e90ff;text-decoration:none;">Terms and Conditions</a>
+</div></body>
+</html>

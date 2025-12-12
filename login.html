@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>InternBuddy | Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<meta name="color-scheme" content="dark" />
+<style>
+:root { --accent:#4A90E2; --dot-blue:#4A90E2; --dot-red:#FF3B3B; --text:#fff; --danger:#ff6b6b; --ok:#20c997; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body {
+  height:100%;
+  font-family:'Space Grotesk', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans';
+  background:#020617;
+  color:var(--text);
+}
+
+/* Layout */
+header {
+  position:fixed;
+  top:0; left:0; right:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  padding:16px 24px;
+  z-index:5;
+}
+.logo {
+  font-weight:900;
+  font-size:1.8rem;
+  color:var(--text);
+  letter-spacing:0.5px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:text-shadow .4s ease;
+}
+.logo-mark { font-weight:900; color:var(--accent); }
+.logo-dot { display:inline-flex; align-items:center; gap:4px; }
+.logo-dot span { width:8px; height:8px; border-radius:50%; display:inline-block; }
+.logo-dot-blue { background:var(--dot-blue); }
+.logo-dot-red { background:var(--dot-red); }
+.logo-glow { text-shadow:0 0 10px rgba(74,144,226,.9),0 0 20px rgba(255,59,59,.7); }
+
+.hero {
+  position:relative;
+  width:100%;
+  min-height:100dvh;
+  background:
+    radial-gradient(circle at top left, rgba(148,163,184,0.35), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(248,113,160,0.45), transparent 55%),
+    linear-gradient(135deg,#020617 0%,#0f172a 35%,#1f2937 60%,#312e81 78%,#9f1239 100%);
+  overflow:hidden;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:68px 12px 24px;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:-120px;
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%, transparent 50%,
+                           rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.03) 75%, transparent 75%, transparent);
+  background-size:70px 70px;
+  opacity:.5;
+  pointer-events:none;
+  z-index:0;
+}
+.particles {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.shape {
+  position:absolute;
+  border-radius:50%;
+  opacity:.5;
+  animation:float var(--dur,10s) infinite ease-in-out alternate;
+}
+@keyframes float {
+  0%{ transform:translate(0,0) scale(1);}
+  50%{ transform:translate(50px,-80px) scale(1.2);}
+  100%{ transform:translate(0,0) scale(1);}
+}
+
+.auth {
+  position:relative;
+  margin:12px auto 24px;
+  background:rgba(15,23,42,0.94);
+  padding:24px;
+  border-radius:20px;
+  box-shadow:0 0 40px rgba(0,0,0,.6);
+  width:min(92vw,420px);
+  text-align:center;
+  z-index:2;
+  backdrop-filter: blur(10px);
+  transition:opacity .4s ease, transform .4s ease;
+}
+.auth h2 { font-size:1.8rem; margin-bottom:6px; color:var(--accent); }
+.sub { margin-bottom:18px; opacity:.9; }
+.auth-hidden { opacity:0; transform:translateY(14px); pointer-events:none; }
+
+.tabs {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  background:#020617cc;
+  padding:6px;
+  border-radius:12px;
+  margin-bottom:14px;
+}
+.tab { padding:10px; border-radius:10px; cursor:pointer; font-weight:700; user-select:none; }
+.tab.active { background:#111827; outline:2px solid #1f2937; }
+
+form { text-align:left; }
+.field { display:grid; gap:6px; margin:12px 0; }
+.field label { font-size:.9rem; opacity:.9; }
+.inp {
+  width:100%;
+  padding:12px 14px;
+  border:none;
+  border-radius:10px;
+  background:#020617;
+  color:#fff;
+  font-size:1rem;
+  outline:2px solid transparent;
+  transition:outline .2s;
+}
+.inp:focus { outline:2px solid var(--accent); }
+
+.btn {
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+  font-size:1rem;
+  cursor:pointer;
+  transition:transform .15s, box-shadow .2s, opacity .2s;
+}
+.btn:hover { transform:translateY(-1px); box-shadow:0 6px 22px rgba(74,144,226,.35); }
+.btn[disabled] { opacity:.6; cursor:not-allowed; box-shadow:none; transform:none; }
+
+.btn-ghost { background:#020617; border:1px solid #1f2937; }
+
+.muted { text-align:center; margin-top:10px; opacity:.85; font-size:.9rem; }
+
+.links { display:flex; justify-content:space-between; margin-top:12px; font-weight:600; }
+.link { color:#fff; text-decoration:underline; cursor:pointer; }
+
+.alert, .success {
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:.95rem;
+  display:none;
+}
+.alert.show { display:block; background:rgba(255,107,107,.12); border:1px solid rgba(255,107,107,.45); color:#ffdede; }
+.success.show { display:block; background:rgba(32,201,151,.12); border:1px solid rgba(32,201,151,.45); color:#d3fff1; }
+
+.social-row { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+
+.btn-google {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:600;
+  background:#ffffff;
+  color:#111;
+}
+.btn-google img { width:18px; height:18px; }
+
+@media (max-height: 780px) { .auth { margin-top: 6px; padding: 16px; } }
+
+/* Celebration overlay – lets background show through */
+.celebration {
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+.celebration.show { opacity:1; pointer-events:auto; }
+.celebration canvas {
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* PURE CSS ROCKET – smaller, near top */
+.rocket-wrapper {
+  position:absolute;
+  left:-140px;
+  top:26%;
+  width:110px;
+  height:65px;
+  z-index:3;
+  transform:translateX(-150%) rotate(-10deg);
+}
+.rocket-wrapper.fly {
+  animation:rocketFly 7s ease-in-out forwards;
+}
+@keyframes rocketFly {
+  0%   { transform:translateX(-150%) translateY(4vh) rotate(-10deg); }
+  40%  { transform:translateX(12vw) translateY(-2vh) rotate(-14deg); }
+  80%  { transform:translateX(52vw) translateY(-8vh) rotate(-18deg); }
+  100% { transform:translateX(110vw) translateY(-14vh) rotate(-22deg); }
+}
+
+.rocket {
+  position:relative;
+  width:100%;
+  height:100%;
+}
+
+/* Body */
+.rocket-body {
+  position:absolute;
+  left:18px;
+  top:12px;
+  width:78px;
+  height:36px;
+  background:linear-gradient(90deg,#fdfdfd,#dde7ff);
+  border-radius:22px;
+  box-shadow:0 0 12px rgba(0,0,0,.35);
+}
+
+/* Nose */
+.rocket-body::after {
+  content:"";
+  position:absolute;
+  right:-20px;
+  top:50%;
+  transform:translateY(-50%);
+  width:0;
+  height:0;
+  border-top:18px solid transparent;
+  border-bottom:18px solid transparent;
+  border-left:20px solid #ff3b3b;
+}
+
+/* Tail cap */
+.rocket-body::before {
+  content:"";
+  position:absolute;
+  left:-12px;
+  top:50%;
+  transform:translateY(-50%);
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#fff,#b7c4ff);
+}
+
+/* Fins */
+.rocket-fin {
+  position:absolute;
+  left:8px;
+  width:20px;
+  height:18px;
+  background:#ff3b3b;
+}
+.rocket-fin.top {
+  top:-10px;
+  border-top-left-radius:6px;
+  border-bottom-right-radius:14px;
+}
+.rocket-fin.bottom {
+  bottom:-10px;
+  border-bottom-left-radius:6px;
+  border-top-right-radius:14px;
+}
+
+/* Window */
+.rocket-window {
+  position:absolute;
+  right:40px;
+  top:50%;
+  transform:translateY(-50%);
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 25%, #fff, #c4d3ff);
+  border:3px solid #111827;
+}
+
+/* Flame */
+.rocket-flame {
+  position:absolute;
+  left:-26px;
+  top:50%;
+  transform:translateY(-50%);
+  width:22px;
+  height:46px;
+  background:radial-gradient(circle at 50% 0,#ffe66d,#ff9f1c,#ff4040);
+  border-radius:50% 10% 10% 50%;
+  filter:blur(0.7px);
+  animation:flamePulse 0.18s infinite alternate;
+}
+@keyframes flamePulse {
+  0% { transform:translateY(-50%) scaleX(1); opacity:.9; }
+  100% { transform:translateY(-50%) scaleX(1.35); opacity:.6; }
+}
+
+/* Stickman on top with glowing INTERNBUDDY flag */
+.stick-student {
+  position:absolute;
+  right:-10px;
+  top:-30px;
+  width:48px;
+  height:64px;
+}
+.stick-head {
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#ffe0b2;
+  border:2px solid #020617;
+  margin:0 auto;
+}
+.stick-body {
+  width:2px;
+  height:24px;
+  background:#020617;
+  margin:0 auto;
+  position:relative;
+}
+.stick-arm {
+  width:18px;
+  height:2px;
+  background:#020617;
+  position:absolute;
+  top:6px;
+  transform-origin:left center;
+  animation:armWave 0.9s ease-in-out infinite alternate;
+}
+.stick-arm.left { transform:rotate(10deg); }
+.stick-arm.right { transform:rotate(-35deg); animation-delay:0.25s; }
+.stick-leg {
+  width:16px;
+  height:2px;
+  background:#020617;
+  position:absolute;
+  bottom:-3px;
+  transform-origin:left center;
+}
+.stick-leg.left { transform:rotate(18deg); }
+.stick-leg.right { transform:rotate(45deg); }
+
+@keyframes armWave {
+  0% { transform:rotate(-18deg); }
+  100% { transform:rotate(15deg); }
+}
+
+/* Flag */
+.flag {
+  position:absolute;
+  top:-8px;
+  left:26px;
+  background:rgba(15,23,42,0.95);
+  color:#e5e7eb;
+  font-weight:900;
+  font-size:0.6rem;
+  padding:3px 9px;
+  border-radius:6px;
+  border:2px solid #38bdf8;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:
+    0 0 10px rgba(56,189,248,0.7),
+    0 0 20px rgba(236,72,153,0.5);
+  transform-origin:left center;
+  animation:flagGlow 1s ease-in-out infinite alternate;
+}
+@keyframes flagGlow {
+  0% { transform:rotate(-3deg); opacity:.9; }
+  100% { transform:rotate(4deg); opacity:1; }
+}
+
+/* Heading */
+.celebration-heading {
+  position:relative;
+  z-index:4;
+  text-align:center;
+  max-width:90vw;
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity .8s ease 0.7s, transform .8s ease 0.7s;
+}
+.celebration-heading.show { opacity:1; transform:translateY(0); }
+.celebration-heading h1 {
+  font-size:clamp(2.6rem, 6vw, 4.2rem);
+  margin-bottom:12px;
+  text-transform:uppercase;
+  letter-spacing:6px;
+  text-shadow:0 0 12px rgba(0,0,0,0.7);
+}
+.celebration-heading p {
+  opacity:.95;
+  font-size:clamp(1.1rem, 2.4vw, 1.6rem);
+  text-shadow:0 0 10px rgba(0,0,0,0.7);
+}
+.celebration-logo-word {
+  font-weight:900;
+  color:var(--accent);
+  text-shadow:0 0 16px rgba(56,189,248,.9);
+}
+
+@media (max-width: 480px) {
+  .rocket-wrapper { width:95px; top:30%; }
+  .celebration-heading h1 { font-size:2.3rem; letter-spacing:3px; }
+}
+
+/* Hide any Terms links if present */
+.terms, .terms-link, a[href*="terms-and-conditions"] { display:none !important; }
+body{ padding-bottom:24px; }
+.auth{ margin-bottom:24px; }
+</style>
+</head>
+<body>
+<div class="hero" role="main" id="hero">
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <header>
+    <div class="logo" aria-label="InternBuddy">
+      <span class="logo-mark">INTERNBUDDY.</span>
+      <span class="logo-dot" aria-hidden="true">
+        <span class="logo-dot-blue"></span>
+        <span class="logo-dot-red"></span>
+      </span>
+    </div>
+  </header>
+
+  <div class="auth" aria-live="polite">
+    <h2 id="formTitle">Welcome</h2>
+    <p class="sub" id="formSubtitle">Sign in with your email</p>
+
+    <div class="tabs" role="tablist" aria-label="Auth tabs">
+      <div id="tab-login" class="tab active" role="tab" aria-selected="true">Login</div>
+      <div id="tab-signup" class="tab" role="tab" aria-selected="false">Sign Up</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input class="inp" type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input class="inp" type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn" id="loginBtn">Login</button>
+
+      <div class="social-row">
+        <button type="button" class="btn btn-google" id="googleLoginBtn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+          <span>Continue with Google</span>
+        </button>
+        <button type="button" class="btn btn-ghost" id="demoLoginBtn">Use Demo Account</button>
+      </div>
+
+      <p class="muted">Forgot your password? <span class="link" id="resetLink">Reset it</span></p>
+    </form>
+
+    <!-- SIGNUP FORM (placeholder) -->
+    <form id="signupForm" novalidate style="display:none;">
+      <div class="field">
+        <label for="signupName">Full name</label>
+        <input class="inp" type="text" id="signupName" placeholder="Alex Intern" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="signupEmail">Email</label>
+        <input class="inp" type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="signupPassword">Password</label>
+        <input class="inp" type="password" id="signupPassword" placeholder="Min. 6 characters" autocomplete="new-password" />
+      </div>
+      <button type="submit" class="btn" id="signupBtn">Create account</button>
+
+      <div class="social-row">
+        <button type="button" class="btn btn-google" id="googleSignupBtn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+          <span>Sign up with Google</span>
+        </button>
+      </div>
+      <p class="muted">Sign up is coming soon.</p>
+    </form>
+
+    <div class="alert" id="alertBox"></div>
+    <div class="success" id="successBox"></div>
+  </div>
+
+  <!-- Celebration overlay -->
+  <div id="celebration" class="celebration" aria-hidden="true">
+    <canvas id="fireworksCanvas"></canvas>
+    <div class="rocket-wrapper" id="rocketWrapper">
+      <div class="rocket">
+        <div class="rocket-body">
+          <div class="rocket-window"></div>
+          <div class="rocket-fin top"></div>
+          <div class="rocket-fin bottom"></div>
+          <div class="rocket-flame"></div>
+        </div>
+        <div class="stick-student">
+          <div class="stick-head"></div>
+          <div class="stick-body"></div>
+          <div class="stick-arm left"></div>
+          <div class="stick-arm right"></div>
+          <div class="stick-leg left"></div>
+          <div class="stick-leg right"></div>
+          <div class="flag">INTERNBUDDY</div>
+        </div>
+      </div>
+    </div>
+    <div class="celebration-heading" id="celebrationHeading">
+      <h1>WELCOME TO YOUR FUTURE</h1>
+      <p>supported by <span class="celebration-logo-word">INTERNBUDDY.</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const formTitle = document.getElementById('formTitle');
+  const formSubtitle = document.getElementById('formSubtitle');
+
+  const loginBtn = document.getElementById('loginBtn');
+  const demoLoginBtn = document.getElementById('demoLoginBtn');
+  const resetLink = document.getElementById('resetLink');
+
+  const authCard = document.querySelector('.auth');
+  const celebrationEl = document.getElementById('celebration');
+  const rocketWrapper = document.getElementById('rocketWrapper');
+  const celebrationHeading = document.getElementById('celebrationHeading');
+  const logoEl = document.querySelector('.logo');
+
+  const alertBox = document.getElementById('alertBox');
+  const successBox = document.getElementById('successBox');
+
+  const fireworksCanvas = document.getElementById('fireworksCanvas');
+  let fwCtx = null;
+  let fireworks = [];
+  let fireworksRunning = false;
+
+  const DEMO_EMAIL = 'internbuddy@outlook.com';
+  const DEMO_PASSWORD = 'demo123';
+
+  function clearMessages() {
+    alertBox.classList.remove('show');
+    successBox.classList.remove('show');
+  }
+  function showAlert(msg) {
+    alertBox.textContent = msg;
+    alertBox.classList.add('show');
+    successBox.classList.remove('show');
+  }
+  function showSuccess(msg) {
+    successBox.textContent = msg;
+    successBox.classList.add('show');
+    alertBox.classList.remove('show');
+  }
+
+  function startRocket(){
+    rocketWrapper.classList.remove('fly');
+    void rocketWrapper.offsetWidth; // restart animation
+    rocketWrapper.classList.add('fly');
+    celebrationHeading.classList.add('show');
+    logoEl.classList.add('logo-glow');
+  }
+
+  // SUBTLE FIREWORKS
+  function initFireworksCanvas() {
+    if (!fireworksCanvas) return;
+    fwCtx = fireworksCanvas.getContext('2d');
+    const resize = () => {
+      fireworksCanvas.width = window.innerWidth;
+      fireworksCanvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+  }
+
+  function spawnFirework() {
+    if (!fireworksCanvas) return;
+    const x = Math.random() * fireworksCanvas.width;
+    const y = Math.random() * fireworksCanvas.height * 0.4 + fireworksCanvas.height * 0.05; // upper half
+    const colors = ['#4A90E2','#FF3B3B','#ffd93d','#b794ff'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const particles = [];
+    for (let i = 0; i < 22; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 2 + 0.8;
+      particles.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, alpha: 1 });
+    }
+    fireworks.push({ particles, color });
+  }
+
+  function animateFireworks() {
+    if (!fwCtx || !fireworksRunning) return;
+
+    fwCtx.fillStyle = 'rgba(0,0,0,0.15)';
+    fwCtx.fillRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+
+    if (Math.random() < 0.05) {
+      spawnFirework();
+    }
+
+    fireworks.forEach(fw => {
+      fw.particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.018;
+      });
+    });
+    fireworks = fireworks.filter(fw => fw.particles.some(p => p.alpha > 0));
+
+    fireworks.forEach(fw => {
+      fwCtx.fillStyle = fw.color;
+      fw.particles.forEach(p => {
+        if (p.alpha <= 0) return;
+        fwCtx.globalAlpha = p.alpha;
+        fwCtx.beginPath();
+        fwCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        fwCtx.fill();
+      });
+      fwCtx.globalAlpha = 1;
+    });
+
+    requestAnimationFrame(animateFireworks);
+  }
+
+  function startFireworks() {
+    if (!fwCtx) initFireworksCanvas();
+    fireworks = [];
+    fireworksRunning = true;
+    requestAnimationFrame(animateFireworks);
+  }
+
+  function startSuccessCelebration(){
+    clearMessages();
+    showSuccess('Welcome to your future.');
+    authCard.classList.add('auth-hidden');
+    celebrationEl.classList.add('show');
+    celebrationEl.setAttribute('aria-hidden','false');
+    startRocket();
+    startFireworks();
+
+    // 10 second celebration then redirect
+    setTimeout(()=>{ window.location.href = '/homepage.html'; },10000);
+  }
+
+  // Tab switching
+  tabLogin.addEventListener('click', () => {
+    tabLogin.classList.add('active');
+    tabSignup.classList.remove('active');
+    tabLogin.setAttribute('aria-selected', 'true');
+    tabSignup.setAttribute('aria-selected', 'false');
+    loginForm.style.display = 'block';
+    signupForm.style.display = 'none';
+    formTitle.textContent = 'Welcome';
+    formSubtitle.textContent = 'Sign in with your email';
+    clearMessages();
+  });
+
+  tabSignup.addEventListener('click', () => {
+    tabSignup.classList.add('active');
+    tabLogin.classList.remove('active');
+    tabSignup.setAttribute('aria-selected', 'true');
+    tabLogin.setAttribute('aria-selected', 'false');
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+    formTitle.textContent = 'Create your account';
+    formSubtitle.textContent = 'Sign up is coming soon';
+    clearMessages();
+  });
+
+  // LOGIN — checks demo credentials
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearMessages();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!email || !password) {
+      showAlert('Please enter both email and password.');
+      return;
+    }
+
+    if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+      startSuccessCelebration();
+    } else {
+      showAlert('Use demo credentials: ' + DEMO_EMAIL + ' / ' + DEMO_PASSWORD);
+    }
+  });
+
+  // DEMO LOGIN — auto-fill and celebrate
+  demoLoginBtn.addEventListener('click', () => {
+    clearMessages();
+    document.getElementById('loginEmail').value = DEMO_EMAIL;
+    document.getElementById('loginPassword').value = DEMO_PASSWORD;
+    startSuccessCelebration();
+  });
+
+  // Reset link placeholder
+  resetLink.addEventListener('click', () => {
+    showAlert('Password reset is not enabled in demo mode.');
+  });
+
+  // Floating background particles / bubbles
+  const particles = document.getElementById('particles');
+  const colorsBg = ['#ffffff11', '#ffffff22', '#ffffff18'];
+
+  for (let i = 0; i < 16; i++) {
+    const s = document.createElement('div');
+    s.className = 'shape';
+    const size = 40 + Math.random() * 120;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.background = colorsBg[Math.floor(Math.random() * colorsBg.length)];
+    s.style.setProperty('--dur', 8 + Math.random() * 10 + 's');
+    particles.appendChild(s);
+  }
+</script>
+</body>
+</html>

@@ -1,234 +1,857 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>InternBuddy – Edit Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --accent:#4A90E2;
-      --dot:#FF4081;
-      --text:#fff;
-      --muted:#bbb;
-      --border:#444;
-      --card-bg:rgba(34,34,40,0.92);
-      --btn-bg:#4A90E2;
-      --btn-bg-hover:#357abf;
-      --shadow:rgba(0,0,0,.18);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Space Grotesk',sans-serif;
-      background: linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
-      color:var(--text);
-      min-height:100vh;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:40px 16px;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
-      opacity: 0.07;
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* top-right buttons */
-    .top-right{
-      position:fixed;
-      top:20px;
-      right:20px;
-      display:flex;
-      gap:12px;
-      z-index:1000;
-    }
-    .top-right button{
-      padding:10px 20px;
-      border:none;
-      border-radius:8px;
-      font-weight:600;
-      cursor:pointer;
-      font-size:15px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .dashboard-btn{
-      background:var(--btn-bg);
-      color:#fff;
-    }
-    .dashboard-btn:hover{
-      background:var(--btn-bg-hover);
-    }
-    .logout-btn{
-      background:#fff;
-      color:var(--btn-bg);
-      border:1px solid var(--btn-bg);
-    }
-    .logout-btn:hover{
-      background:var(--btn-bg);
-      color:#fff;
-    }
-    .logo-center{
-      font-size:28px;
-      font-weight:700;
-      letter-spacing:-.5px;
-      margin-bottom:48px;
-      color: var(--accent);
-      text-align: center;
-      z-index: 1;
-      position: relative;
-    }
-    .logo-center span.dot{
-      display:inline-block;
-      width:8px;height:8px;
-      background:var(--dot);
-      border-radius:50%;
-      margin-left:4px;
-      vertical-align: middle;
-    }
-    .card{
-      width:100%;
-      max-width:480px;
-      background:var(--card-bg);
-      border-radius:20px;
-      padding:40px 32px;
-      margin-bottom:24px;
-      box-shadow:0 8px 30px var(--shadow);
-      z-index: 1;
-      position: relative;
-    }
-    .card h2{color:#fff;margin-bottom:8px;font-size:24px}
-    .card p{color:#ddd;margin-bottom:28px;font-size:14px}
-    label{display:block;margin:20px 0 6px;font-weight:500;font-size:14px;color:#fff}
-    input,select{
-      width:100%;
-      padding:12px 16px;
-      background:rgba(34,34,40,0.7);
-      border:1px solid var(--border);
-      border-radius:8px;
-      color:#fff;
-      font-size:15px;
-      font-weight:600;
-      margin-bottom: 0;
-    }
-    input[readonly]{background:rgba(34,34,40,0.4);color:#bbb;cursor:not-allowed}
-    input:focus,select:focus{outline:none;border-color:var(--accent)}
-    button[type="submit"]{
-      margin-top:28px;
-      background:var(--btn-bg);
-      color:#fff;
-      font-weight:700;
-      font-size:16px;
-      border:none;
-      border-radius:8px;
-      padding:14px;
-      cursor:pointer;
-      transition: background 0.2s;
-      width:100%;
-    }
-    button[type="submit"]:hover{
-      background:var(--btn-bg-hover);
-    }
-    @media (max-width:600px){
-      .card{padding:24px 8px;}
-      .logo-center{font-size:22px;margin-bottom:32px;}
-      .top-right{top:10px;right:10px;}
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InternBuddy – Edit Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#4A90E2;
+  --dot:#FF4081;
+  --text:#fff;
+  --muted:#bbb;
+  --border:#444;
+  --card-bg:rgba(34,34,40,0.92);
+  --btn-bg:#4A90E2;
+  --btn-bg-hover:#357abf;
+  --shadow:rgba(0,0,0,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background: linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
+  color:var(--text);
+  min-height:100vh;
+  position:relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 40px;
+  background:#111;
+  box-shadow:0 1px 3px var(--shadow);
+  position:sticky;top:0;z-index:10;
+}
+.logo{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-.5px;
+  color: var(--accent);
+}
+.logo span.dot{
+  display:inline-block;
+  width:6px;height:6px;
+  background:var(--dot);
+  border-radius:50%;
+  margin-left:3px;
+  vertical-align: middle;
+}
+nav a{
+  margin-left:24px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:500;
+  transition: color 0.2s, background 0.2s;
+  padding:6px 0;
+  border-radius:8px;
+}
+nav a.btn{
+  background:var(--btn-bg);
+  color:#fff;
+  padding:8px 20px;
+  border-radius:8px;
+  margin-left:32px;
+}
+nav a:hover{
+  color: var(--accent);
+  background:#fff;
+}
+nav a.btn:hover {
+  color: var(--btn-bg);
+  background: #fff;
+}
+
+/* Layout */
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:40px 20px 60px;
+  position:relative;
+  z-index:1;
+}
+.page-header{
+  margin-bottom:20px;
+}
+.page-header h1{
+  font-size:26px;
+  margin-bottom:4px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* Grid: snapshot + form */
+.profile-layout{
+  display:grid;
+  grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
+  gap:24px;
+  align-items:flex-start;
+}
+
+/* Snapshot / side card */
+.snapshot-card{
+  background:var(--card-bg);
+  border-radius:18px;
+  padding:22px 18px;
+  box-shadow:0 8px 30px var(--shadow);
+}
+.snapshot-title{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.snapshot-sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:14px;
+}
+.snapshot-item{
+  font-size:13px;
+  margin-bottom:6px;
+}
+.snapshot-label{
+  color:var(--muted);
+}
+.snapshot-value{
+  color:#fff;
+  font-weight:500;
+}
+.badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+.badge{
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(0,0,0,0.35);
+}
+
+/* completeness bar */
+.completeness{
+  margin-top:14px;
+}
+.completeness-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.progress-track{
+  width:100%;
+  height:8px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.4);
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#4A90E2,#FF4081);
+  transition:width 0.25s ease-out;
+}
+.completeness-note{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* Form card */
+.card{
+  width:100%;
+  background:var(--card-bg);
+  border-radius:20px;
+  padding:26px 22px 24px;
+  box-shadow:0 8px 30px var(--shadow);
+}
+.card h2{
+  color:#fff;
+  margin-bottom:4px;
+  font-size:20px;
+}
+.card p.lead{
+  color:#ddd;
+  margin-bottom:18px;
+  font-size:13px;
+}
+
+/* Form layout */
+.form-section{
+  margin-bottom:18px;
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding-top:14px;
+}
+.form-section:first-of-type{
+  border-top:none;
+  padding-top:0;
+}
+.form-section-title{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.form-row{
+  display:flex;
+  gap:14px;
+  margin-top:8px;
+}
+.form-row > div{
+  flex:1;
+}
+label{
+  display:block;
+  margin:10px 0 6px;
+  font-weight:500;
+  font-size:13px;
+  color:#fff;
+}
+input,select{
+  width:100%;
+  padding:10px 14px;
+  background:rgba(34,34,40,0.7);
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:#fff;
+  font-size:14px;
+  font-weight:500;
+  margin-bottom:0;
+}
+input[readonly]{
+  background:rgba(34,34,40,0.4);
+  color:#bbb;
+  cursor:not-allowed;
+}
+input:focus,select:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+/* select arrow */
+select{
+  appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #fff 50%),
+    linear-gradient(135deg, #fff 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 13px) calc(50% - 3px);
+  background-size:5px 5px, 5px 5px;
+  background-repeat:no-repeat;
+}
+
+/* checkboxes */
+.checkbox-row{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.checkbox-item{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:13px;
+  color:var(--muted);
+}
+.checkbox-item input[type="checkbox"]{
+  width:auto;
+  margin-top:2px;
+}
+
+/* buttons */
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+button.primary{
+  background:var(--btn-bg);
+  color:#fff;
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  border-radius:8px;
+  padding:12px 18px;
+  cursor:pointer;
+  transition: background 0.2s;
+}
+button.primary:hover{
+  background:var(--btn-bg-hover);
+}
+button.secondary{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--border);
+  font-size:13px;
+  border-radius:8px;
+  padding:10px 14px;
+  cursor:pointer;
+}
+button.secondary:hover{
+  border-color:var(--btn-bg);
+  color:#fff;
+}
+
+/* small card spacing */
+.card-small{
+  margin-top:18px;
+}
+
+/* Terms link */
+.terms-link{
+  text-align:center;
+  margin:24px 0 32px;
+  font-weight:700;
+}
+.terms-link a{
+  color:#1e90ff;
+  text-decoration:none;
+}
+
+/* Responsive */
+@media (max-width:900px){
+  header{padding:16px 12px;}
+  main{padding:28px 12px 40px;}
+  .profile-layout{
+    grid-template-columns:1fr;
+  }
+}
+@media (max-width:600px){
+  header{padding:12px 8px;}
+  nav a{margin-left:12px;font-size:14px;}
+  nav a.btn{margin-left:16px;padding:6px 14px;}
+  .card, .snapshot-card{padding:20px 14px;}
+}
+</style>
 </head>
 <body>
 
-<!-- top-right navigation -->
-<div class="top-right">
-  <button class="dashboard-btn" onclick="location.href='homepage.html'">Dashboard</button>
-  <button class="logout-btn" onclick="location.href='index.html'">Logout</button>
+<header>
+  <div class="logo">InternBuddy<span class="dot"></span></div>
+  <nav>
+    <a href="homepage.html">Dashboard</a>
+    <a href="edit-profile.html">Profile</a>
+    <a href="index.html" class="btn" id="logout-btn">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <h1>Edit your profile</h1>
+    <p>This profile powers your CV creator, job matches and application tracker.</p>
+  </div>
+
+  <div class="profile-layout">
+    <!-- Snapshot / side card -->
+    <aside class="snapshot-card">
+      <div class="snapshot-title">Profile snapshot</div>
+      <div class="snapshot-sub">This is how InternBuddy understands your profile at a glance.</div>
+
+      <div class="snapshot-item">
+        <span class="snapshot-label">Name:</span>
+        <span class="snapshot-value" id="snap-name">–</span>
+      </div>
+      <div class="snapshot-item">
+        <span class="snapshot-label">Headline:</span>
+        <span class="snapshot-value" id="snap-headline">Add a quick one-line summary.</span>
+      </div>
+      <div class="snapshot-item">
+        <span class="snapshot-label">Path:</span>
+        <span class="snapshot-value" id="snap-path">–</span>
+      </div>
+      <div class="snapshot-item">
+        <span class="snapshot-label">Locations:</span>
+        <span class="snapshot-value" id="snap-locations">–</span>
+      </div>
+
+      <div class="badge-row">
+        <span class="badge" id="badge-role">Role type: –</span>
+        <span class="badge" id="badge-work">Work auth: –</span>
+        <span class="badge" id="badge-remote">Remote / onsite: –</span>
+      </div>
+
+      <div class="completeness">
+        <div class="completeness-label">
+          Profile completeness: <span id="complete-label">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="complete-bar"></div>
+        </div>
+        <div class="completeness-note">
+          Higher completeness helps generate stronger CVs and better job matches.
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main section -->
+    <section>
+      <div class="card">
+        <h2>Core profile</h2>
+        <p class="lead">Keep this up to date so InternBuddy can personalise everything around you.</p>
+
+        <form id="profile-form">
+          <!-- Personal -->
+          <div class="form-section">
+            <div class="form-section-title">Personal details</div>
+            <div class="form-row">
+              <div>
+                <label>Email (locked)</label>
+                <input type="email" id="email" name="email" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>First name</label>
+                <input type="text" name="firstName" required>
+              </div>
+              <div>
+                <label>Last name</label>
+                <input type="text" name="lastName" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>Profile headline</label>
+                <input type="text" name="headline" placeholder="e.g. CS student focused on backend & cloud">
+              </div>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="form-section">
+            <div class="form-section-title">Education</div>
+            <div class="form-row">
+              <div>
+                <label>University</label>
+                <input type="text" name="university" placeholder="e.g. London South Bank University">
+              </div>
+              <div>
+                <label>Graduation year</label>
+                <input type="number" name="gradYear" min="2024" max="2035">
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>Degree level</label>
+                <select name="degreeLevel">
+                  <option value="">Select</option>
+                  <option>BSc</option>
+                  <option>BA</option>
+                  <option>MSc</option>
+                  <option>MA</option>
+                  <option>PhD</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label>What are you studying?</label>
+                <select name="studyField">
+                  <option value="">Select</option>
+                  <option>Computer Science</option>
+                  <option>Software Engineering</option>
+                  <option>Data Science</option>
+                  <option>Mechanical Engineering</option>
+                  <option>Electrical Engineering</option>
+                  <option>Business Administration</option>
+                  <option>Marketing</option>
+                  <option>Finance</option>
+                  <option>Design (UX/UI)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career prefs -->
+          <div class="form-section">
+            <div class="form-section-title">Career preferences</div>
+            <div class="form-row">
+              <div>
+                <label>Preferred role type</label>
+                <select name="roleType">
+                  <option value="">Select</option>
+                  <option>Internship</option>
+                  <option>Graduate / Entry-level</option>
+                  <option>Full-time</option>
+                  <option>Part-time</option>
+                </select>
+              </div>
+              <div>
+                <label>Work authorisation</label>
+                <select name="workAuth">
+                  <option value="">Select</option>
+                  <option>UK Citizen / Settled</option>
+                  <option>EU Citizen</option>
+                  <option>Student visa</option>
+                  <option>Need sponsorship</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>Preferred location(s)</label>
+                <input type="text" name="locations" placeholder="e.g. London, Remote EU">
+              </div>
+              <div>
+                <label>Remote / onsite preference</label>
+                <select name="remotePreference">
+                  <option value="">No preference</option>
+                  <option>Remote only</option>
+                  <option>Hybrid</option>
+                  <option>Onsite</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>Target industries</label>
+                <input type="text" name="targetIndustries" placeholder="e.g. FinTech, SaaS, Consulting">
+              </div>
+              <div>
+                <label>Salary expectations (optional)</label>
+                <input type="text" name="salaryRange" placeholder="e.g. £25k–£35k grad roles">
+              </div>
+            </div>
+          </div>
+
+          <!-- Links & alerts -->
+          <div class="form-section">
+            <div class="form-section-title">Links & alerts</div>
+            <div class="form-row">
+              <div>
+                <label>LinkedIn</label>
+                <input type="url" name="linkedin" placeholder="https://www.linkedin.com/in/you">
+              </div>
+              <div>
+                <label>Portfolio / GitHub</label>
+                <input type="url" name="portfolio" placeholder="https://your-portfolio.com">
+              </div>
+            </div>
+
+            <div class="checkbox-row">
+              <label style="margin:4px 0 2px;font-size:13px;color:#fff;">Email preferences</label>
+              <div class="checkbox-item">
+                <input type="checkbox" id="jobAlerts" name="jobAlerts">
+                <label for="jobAlerts">Send me curated job and internship alerts based on my profile.</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="interviewTips" name="interviewTips">
+                <label for="interviewTips">Send me interview prep tips and reminders before upcoming interviews.</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="primary">Save profile</button>
+            <button type="button" class="secondary" id="reset-profile">Reset to last saved</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Password -->
+      <div class="card card-small">
+        <h2>Update password</h2>
+        <p class="lead">Choose a strong password to keep your account secure.</p>
+        <form id="password-form">
+          <div class="form-row">
+            <div>
+              <label>New password</label>
+              <input type="password" name="password" minlength="6" required>
+            </div>
+            <div>
+              <label>Confirm password</label>
+              <input type="password" name="confirm" required>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="primary">Set new password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="card card-small" style="margin-top:18px;border:1px solid #b91c1c;">
+        <h2 style="color:#fecaca;">Danger zone</h2>
+        <p class="lead" style="color:#fca5a5;">
+          This will clear all InternBuddy data stored in this browser (profile, signup, CVs, applications, password).
+          You’ll stay on this page but everything will reset as if you’re a new user on this device.
+        </p>
+        <div class="actions">
+          <button type="button" class="secondary" id="clear-data-btn" style="border-color:#b91c1c;color:#fecaca;">
+            Clear all local data
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="terms-link">
+  <a href="terms-and-conditions.html">Terms and Conditions</a>
 </div>
 
-<div class="logo-center">InternBuddy<span class="dot"></span></div>
-
-<!-- EDIT PROFILE CARD -->
-<div class="card">
-  <h2>Edit your profile</h2>
-  <p>Update your details (email is locked).</p>
-  <form id="profile-form">
-    <label>Email (locked)</label>
-    <input type="email" id="email" readonly>
-
-    <label>First name</label>
-    <input type="text" name="firstName" required>
-
-    <label>Last name</label>
-    <input type="text" name="lastName" required>
-
-    <label>Graduation year</label>
-    <input type="number" name="gradYear" min="2024" max="2035" required>
-
-    <label>What are you studying?</label>
-    <select name="studyField" required>
-      <option>Computer Science</option><option>Software Engineering</option><option>Data Science</option><option>Mechanical Engineering</option>
-      <option>Electrical Engineering</option><option>Business Administration</option><option>Marketing</option><option>Finance</option><option>Design (UX/UI)</option>
-    </select>
-
-    <label>Preferred role type</label>
-    <select name="roleType" required>
-      <option>Internship</option><option>Full-time</option><option>Part-time</option>
-    </select>
-
-    <label>Preferred location(s)</label>
-    <input type="text" name="locations" required>
-
-    <label>Work authorisation</label>
-    <select name="workAuth" required>
-      <option>EU Citizen</option><option>US work auth</option><option>Need sponsorship</option>
-    </select>
-
-    <button type="submit">Save profile</button>
-  </form>
-</div>
-
-<!-- PASSWORD CARD -->
-<div class="card">
-  <h2>Update / Reset Password</h2>
-  <form id="password-form">
-    <label>New password</label>
-    <input type="password" name="password" minlength="6" required>
-
-    <label>Confirm password</label>
-    <input type="password" name="confirm" required>
-
-    <button type="submit">Set new password</button>
-  </form>
-</div>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-  /* pre-fill current data */
-  const data = {...JSON.parse(localStorage.getItem('internbuddy-signup')||'{}'),...JSON.parse(localStorage.getItem('internbuddy-profile')||'{}')};
-  ['email','firstName','lastName','gradYear','studyField','roleType','locations','workAuth'].forEach(k=>{
-    const el = document.querySelector(`[name="${k}"]`) || document.getElementById(k);
-    if(el) el.value = data[k]||'';
+// ---------- Firebase setup ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyDw1PnEpFh-kYnqCmws77u4kIHZrkFNtCg",
+  authDomain: "internbuddyv1-a2caa.firebaseapp.com",
+  projectId: "internbuddyv1-a2caa",
+  storageBucket: "internbuddyv1-a2caa.appspot.com",
+  messagingSenderId: "646792285853",
+  appId: "1:646792285853:web:018d4fbc3d5dc8c05a4e74",
+  measurementId: "G-LKBMPC75EY"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+
+// ---------- Local data ----------
+let signupData  = JSON.parse(localStorage.getItem('internbuddy-signup')  || '{}');
+let profileData = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
+let data        = {...signupData, ...profileData};
+
+const FIELD_NAMES = [
+  'email','firstName','lastName','headline',
+  'university','gradYear','degreeLevel','studyField',
+  'roleType','workAuth','locations','remotePreference',
+  'targetIndustries','salaryRange','linkedin','portfolio'
+];
+const CHECKBOX_FIELDS = ['jobAlerts','interviewTips'];
+
+// ---------- Helpers ----------
+function getCurrentProfile(){
+  const fd = new FormData(document.getElementById('profile-form'));
+  const obj = {};
+  FIELD_NAMES.forEach(name => {
+    obj[name] = fd.get(name) || '';
+  });
+  CHECKBOX_FIELDS.forEach(name => {
+    obj[name] = fd.get(name) ? true : false;
+  });
+  return obj;
+}
+
+function updateSnapshot(){
+  const profile = getCurrentProfile();
+
+  const name = [profile.firstName, profile.lastName].filter(Boolean).join(' ') || 'Add your name';
+  document.getElementById('snap-name').textContent = name;
+
+  document.getElementById('snap-headline').textContent =
+    profile.headline || 'Add a quick one-line summary.';
+
+  const pathParts = [];
+  if(profile.degreeLevel || profile.studyField){
+    pathParts.push([profile.degreeLevel, profile.studyField].filter(Boolean).join(' · '));
+  }
+  if(profile.university){
+    pathParts.push(profile.university);
+  }
+  document.getElementById('snap-path').textContent = pathParts.join(' @ ') || 'Add your education details.';
+
+  document.getElementById('snap-locations').textContent =
+    profile.locations || 'Add preferred locations.';
+
+  document.getElementById('badge-role').textContent =
+    'Role type: ' + (profile.roleType || '–');
+  document.getElementById('badge-work').textContent =
+    'Work auth: ' + (profile.workAuth || '–');
+  document.getElementById('badge-remote').textContent =
+    'Remote / onsite: ' + (profile.remotePreference || '–');
+}
+
+function updateCompleteness(){
+  const profile = getCurrentProfile();
+  const importantFields = [
+    'firstName','lastName','headline',
+    'university','gradYear','studyField',
+    'roleType','workAuth','locations'
+  ];
+  const filled = importantFields.filter(f => profile[f] && String(profile[f]).trim().length > 0).length;
+  const pct = Math.round((filled / importantFields.length) * 100);
+  const bar = document.getElementById('complete-bar');
+  const label = document.getElementById('complete-label');
+  bar.style.width = pct + '%';
+  label.textContent = pct + '%';
+}
+
+function prefillForm() {
+  const emailEl = document.getElementById('email');
+  if (emailEl) {
+    emailEl.value = data.email || '';
+  }
+
+  FIELD_NAMES.forEach(name => {
+    if(name === 'email') return;
+    const el = document.querySelector(`[name="${name}"]`);
+    if(!el) return;
+    el.value = data[name] ?? '';
   });
 
-  /* save profile -> update sponsorship flag */
-  document.getElementById('profile-form').addEventListener('submit', e=>{
-    e.preventDefault();
-    Object.assign(data, Object.fromEntries(new FormData(e.target)));
-    localStorage.setItem('internbuddy-profile', JSON.stringify(data));
-    alert('Profile saved!');
+  CHECKBOX_FIELDS.forEach(name => {
+    const el = document.querySelector(`[name="${name}"]`);
+    if(!el) return;
+    el.checked = (data[name] === true || data[name] === 'true' || data[name] === 'on');
   });
 
-  /* password update */
-  document.getElementById('password-form').addEventListener('submit', e=>{
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    if(fd.get('password') !== fd.get('confirm')){alert('Passwords do not match');return;}
-    localStorage.setItem('internbuddy-password', fd.get('password'));
-    alert('Password updated!');
-    e.target.reset();
+  updateSnapshot();
+  updateCompleteness();
+}
+
+// ---------- Auth guard & email injection ----------
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    // Not logged in → kick back to login
+    window.location.href = "index.html";
+    return;
+  }
+
+  // Always trust email from Firebase, not localStorage
+  data.email = user.email;
+
+  // Keep local copies aligned with auth email
+  signupData.email  = signupData.email  || user.email;
+  profileData.email = profileData.email || user.email;
+
+  prefillForm();
+});
+
+// ---------- UI events ----------
+document.getElementById('profile-form').addEventListener('input', () => {
+  updateSnapshot();
+  updateCompleteness();
+});
+
+document.getElementById('profile-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const profile = getCurrentProfile();
+
+  // Ensure email stays as the Firebase user email
+  if (auth.currentUser && auth.currentUser.email) {
+    profile.email = auth.currentUser.email;
+  } else {
+    profile.email = data.email || profile.email;
+  }
+
+  // Update local copies
+  profileData = {...profileData, ...profile};
+  localStorage.setItem('internbuddy-profile', JSON.stringify(profileData));
+
+  // Also update signup object with basic info so other pages using it see fresh data
+  signupData = {
+    ...signupData,
+    email: profile.email,
+    firstName: profile.firstName,
+    lastName: profile.lastName
+  };
+  localStorage.setItem('internbuddy-signup', JSON.stringify(signupData));
+
+  data = {...signupData, ...profileData};
+  alert('Profile saved!');
+});
+
+document.getElementById('reset-profile').addEventListener('click', () => {
+  const latestProfile = JSON.parse(localStorage.getItem('internbuddy-profile') || '{}');
+  profileData = latestProfile;
+  data = {...signupData, ...profileData};
+
+  // keep email from auth
+  if (auth.currentUser && auth.currentUser.email) {
+    data.email = auth.currentUser.email;
+  }
+
+  prefillForm();
+});
+
+// Password update (local-only at the moment)
+document.getElementById('password-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const pw = fd.get('password');
+  const confirm = fd.get('confirm');
+  if(pw !== confirm){
+    alert('Passwords do not match');
+    return;
+  }
+  if(pw.length < 6){
+    alert('Password should be at least 6 characters.');
+    return;
+  }
+  // NOTE: This only updates localStorage, not Firebase Auth password.
+  localStorage.setItem('internbuddy-password', pw);
+  alert('Password updated locally.');
+  e.target.reset();
+});
+
+// Danger zone: clear all local data
+const clearBtn = document.getElementById('clear-data-btn');
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    const sure = confirm('This will clear all InternBuddy data saved in this browser (profile, CVs, applications, saved jobs). Continue?');
+    if (!sure) return;
+
+    localStorage.removeItem('internbuddy-signup');
+    localStorage.removeItem('internbuddy-profile');
+    localStorage.removeItem('internbuddy-password');
+    localStorage.removeItem('savedCVs');
+    localStorage.removeItem('internbuddy-applications');
+
+    alert('All local InternBuddy data has been cleared on this device.');
+    location.reload();
   });
+}
+
+// Logout button (Firebase sign out)
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    auth.signOut()
+      .then(() => {
+        window.location.href = "index.html";
+      })
+      .catch(() => {
+        // fallback if something weird happens
+        window.location.href = "index.html";
+      });
+  });
+}
 </script>
 </body>
 </html>

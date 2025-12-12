@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InternBuddy | Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#4A90E2;
+    --dot:#FF4081;
+    --text:#fff;
+    --muted:#bbb;
+    --card-bg:rgba(34,34,40,0.92);
+    --btn-bg:#4A90E2;
+    --btn-bg-hover:#357abf;
+    --shadow:rgba(0,0,0,.18);
+    --panel:#0f1117;
+    --success:#3dd598;
+    --warning:#f5a524;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background: radial-gradient(circle at 10% 20%, rgba(74,144,226,0.12), transparent 30%),
+                radial-gradient(circle at 80% 0%, rgba(255,64,129,0.16), transparent 30%),
+                linear-gradient(120deg, #232526 0%, #3a6186 50%, #89253e 100%);
+    color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 40px;
+    background:#111;
+    box-shadow:0 1px 3px var(--shadow);
+    position:sticky;top:0;z-index:10;
+  }
+  .logo{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:-.5px;
+    color: var(--accent);
+  }
+  .logo span.dot{
+    display:inline-block;
+    width:6px;height:6px;
+    background:var(--dot);
+    border-radius:50%;
+    margin-left:3px;
+    vertical-align: middle;
+  }
+  nav a{
+    margin-left:24px;
+    color:var(--text);
+    text-decoration:none;
+    font-weight:500;
+    transition: color 0.2s;
+  }
+  nav a.btn{
+    background:var(--btn-bg);
+    color:#fff;
+    padding:8px 20px;
+    border-radius:8px;
+    margin-left:32px;
+    transition: background 0.2s;
+  }
+  nav a:hover, nav a.btn:hover {
+    color: var(--accent);
+    background: #fff;
+  }
+  nav a.btn:hover {
+    color: var(--btn-bg);
+    background: #fff;
+  }
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:60px 20px;
+  }
+  .hero{
+    text-align:center;
+    margin-bottom:40px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px var(--shadow);
+    padding: 40px 32px;
+  }
+  .hero h1{
+    font-size:40px;
+    font-weight:700;
+    margin-bottom:12px;
+  }
+  .hero p{
+    font-size:18px;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+    margin-bottom: 40px;
+  }
+  .card{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 2px 8px var(--shadow);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card h3{margin-bottom:12px;font-size:20px;color: var(--accent);}
+  .card p{color:var(--muted);font-size:15px;line-height:1.5}
+  .cta-center{text-align:center;margin-top:40px;}
+  .cta-btn{
+    background:var(--btn-bg);
+    color:#fff;
+    padding:12px 28px;
+    border-radius:8px;
+    font-weight:600;
+    text-decoration:none;
+    display:inline-block;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .cta-btn:hover{background:var(--btn-bg-hover);transform: scale(1.05);}
+
+  /* Coach panel */
+  .coach{
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:40px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  }
+  .coach-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .coach-meta{display:flex;align-items:center;gap:16px;}
+  .avatar-wrap{position:relative;width:64px;height:64px;}
+  .avatar{
+    width:64px;height:64px;border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, #4A90E2, #111822 70%);
+    display:grid;place-items:center;
+    color:#fff;font-weight:700;font-size:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  }
+  .avatar .wave{
+    position:absolute;inset:-8px;
+    border-radius:50%;
+    border:1px solid rgba(74,144,226,0.5);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%{transform:scale(0.95);opacity:.8;}100%{transform:scale(1.2);opacity:0;}}
+  .coach-status{color:var(--muted);font-size:14px;}
+  .pill{
+    background:rgba(74,144,226,0.15);
+    color:#cfe3ff;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:13px;
+    border:1px solid rgba(74,144,226,0.35);
+  }
+  .question-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:16px;
+  }
+  .question-title{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .question-meta{display:flex;gap:8px;flex-wrap:wrap;}
+  .question-meta span{
+    background:rgba(255,255,255,0.06);
+    padding:6px 10px;
+    border-radius:10px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .answer-box textarea{
+    width:100%;
+    min-height:140px;
+    background:rgba(0,0,0,0.35);
+    color:var(--text);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:14px;
+    font-family:inherit;
+    resize:vertical;
+  }
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+  button.action{
+    background:var(--btn-bg);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform .15s, background .2s;
+  }
+  button.action.secondary{background:rgba(255,255,255,0.08);color:var(--text);}
+  button.action:hover{transform:translateY(-1px);}
+  button:disabled{opacity:0.5;cursor:not-allowed;}
+  .hint{color:var(--muted);font-size:13px;margin-top:8px;}
+  .feedback{
+    margin-top:18px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:12px 14px;
+    min-height:70px;
+    line-height:1.5;
+  }
+  .feedback.loading{color:var(--accent);} 
+  .split{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:22px;
+  }
+  @media(max-width:900px){
+    .split{grid-template-columns:1fr;}
+    .coach-header{align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">InternBuddy<span class="dot"></span></div>
+  <nav>
+    <a href="homepage.html">Dashboard</a>
+    <a href="edit-profile.html">Profile</a>
+    <a href="index.html" class="btn">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Interview Preparation Hub</h1>
+    <p>Live practice with AI-powered feedback. Type or speak your answer and get instant coaching.</p>
+  </section>
+
+  <section class="coach">
+    <div class="coach-header">
+      <div class="coach-meta">
+        <div class="avatar-wrap">
+          <div class="avatar"><span>IB</span><span class="wave" aria-hidden="true"></span></div>
+        </div>
+        <div>
+          <div class="pill" id="coachState">Ready to help</div>
+          <div class="coach-status" id="coachStatus">Ask for a random question or start speaking.</div>
+        </div>
+      </div>
+      <button class="action" id="nextQuestion">Ask Random Question</button>
+    </div>
+
+    <div class="split">
+      <div>
+        <div class="question-card">
+          <div class="question-title" id="questionText">Click "Ask Random Question" to start.</div>
+          <div class="question-meta">
+            <span id="questionType">Type: -</span>
+            <span id="questionDifficulty">Level: -</span>
+          </div>
+        </div>
+        <div class="answer-box">
+          <textarea id="userAnswer" placeholder="Talk through your answer or type it here. Use STAR (Situation, Task, Action, Result) for behavioral prompts."></textarea>
+          <div class="controls">
+            <button class="action secondary" id="listenToggle">Start listening</button>
+            <button class="action secondary" id="clearAnswer">Clear</button>
+            <button class="action" id="submitAnswer">Get AI Feedback</button>
+          </div>
+          <div class="hint">Mic uses the built-in browser speech API; if unavailable, type instead.</div>
+        </div>
+      </div>
+      <div>
+        <div class="feedback" id="feedback">Feedback will appear here once you submit.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 style="margin-bottom:20px;color:var(--accent);">Common Interview Questions</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Behavioral</h3>
+        <p>Tell me about a time you faced a challenge at work and how you overcame it.</p>
+      </div>
+      <div class="card">
+        <h3>Technical</h3>
+        <p>Explain the difference between REST and GraphQL APIs with examples.</p>
+      </div>
+      <div class="card">
+        <h3>HR</h3>
+        <p>Why do you want to work for our company?</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 style="margin-bottom:20px;color:var(--accent);">Tips & Tricks</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>STAR Method</h3>
+        <p>Use Situation, Task, Action, Result to structure your answers for clarity.</p>
+      </div>
+      <div class="card">
+        <h3>Body Language</h3>
+        <p>Maintain good posture, eye contact, and a confident tone throughout.</p>
+      </div>
+      <div class="card">
+        <h3>Resume Highlight</h3>
+        <p>Emphasize measurable achievements rather than just responsibilities.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-center">
+    <a href="mock-interview.html" class="cta-btn">Start Mock Interview</a>
+  </div>
+</main>
+
+<script>
+  const questions = [
+    { text: 'Tell me about a time you resolved a conflict within a team.', type: 'Behavioral', level: 'Intermediate' },
+    { text: 'Describe a project where you had to learn something quickly to succeed.', type: 'Behavioral', level: 'Intermediate' },
+    { text: 'Walk me through how you would debug a production issue affecting many users.', type: 'Technical', level: 'Advanced' },
+    { text: 'Explain the difference between optimistic and pessimistic locking.', type: 'Technical', level: 'Intermediate' },
+    { text: 'Why do you want to work for our company?', type: 'HR', level: 'Easy' },
+    { text: 'What is a time you failed, and what did you learn from it?', type: 'Behavioral', level: 'Intermediate' },
+    { text: 'How would you optimize a slow API endpoint?', type: 'Technical', level: 'Advanced' },
+    { text: 'What motivates you to do your best work?', type: 'HR', level: 'Easy' }
+  ];
+
+  const questionText = document.getElementById('questionText');
+  const questionType = document.getElementById('questionType');
+  const questionDifficulty = document.getElementById('questionDifficulty');
+  const coachState = document.getElementById('coachState');
+  const coachStatus = document.getElementById('coachStatus');
+  const feedbackBox = document.getElementById('feedback');
+  const userAnswer = document.getElementById('userAnswer');
+
+  let recognition;
+  let listening = false;
+  let currentQuestion = null;
+
+  function pickRandomQuestion(){
+    currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+    questionText.textContent = currentQuestion.text;
+    questionType.textContent = 'Type: ' + currentQuestion.type;
+    questionDifficulty.textContent = 'Level: ' + currentQuestion.level;
+    coachStatus.textContent = 'Think aloud using STAR (Situation, Task, Action, Result).';
+  }
+
+  function setFeedback(text, loading=false){
+    feedbackBox.textContent = text;
+    feedbackBox.classList.toggle('loading', loading);
+  }
+
+  function mockAiFeedback(answer){
+    const lengthScore = answer.split(' ').length;
+    const strengths = lengthScore > 90 ? 'Good depth and detail.' : 'Concise answer; add more specifics.';
+    const starHint = /situation|task|action|result/i.test(answer) ? 'You referenced STAR structure nicely.' : 'Try framing with STAR for clarity.';
+    return [
+      'Feedback:',
+      '- ' + strengths,
+      '- ' + starHint,
+      '- Mention impact with metrics when possible.'
+    ].join('\n');
+  }
+
+  function analyzeAnswer(){
+    if(!currentQuestion){
+      setFeedback('Pick a question first.');
+      return;
+    }
+    const answer = userAnswer.value.trim();
+    if(!answer){
+      setFeedback('Say or type your answer before requesting feedback.');
+      return;
+    }
+    setFeedback('Analyzing with AI coach...', true);
+
+    // Replace this timeout with a real API call to your backend/AI service.
+    // Example: fetch('/api/feedback', { method: 'POST', body: JSON.stringify({ question: currentQuestion, answer }) })
+    setTimeout(() => {
+      const feedback = mockAiFeedback(answer);
+      setFeedback(feedback, false);
+      coachState.textContent = 'Feedback ready';
+    }, 800);
+  }
+
+  // Speech recognition setup (browser-native)
+  function initSpeech(){
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SpeechRecognition){
+      coachStatus.textContent = 'Speech input not available in this browser. Type your response instead.';
+      document.getElementById('listenToggle').disabled = true;
+      return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onresult = (event) => {
+      let transcript = '';
+      for(let i = event.resultIndex; i < event.results.length; i++){
+        transcript += event.results[i][0].transcript;
+      }
+      userAnswer.value = (userAnswer.value + ' ' + transcript).trim();
+    };
+    recognition.onstart = () => {
+      listening = true;
+      coachState.textContent = 'Listening...';
+      coachStatus.textContent = 'Speak clearly. Click again to stop.';
+      document.getElementById('listenToggle').textContent = 'Stop listening';
+    };
+    recognition.onend = () => {
+      listening = false;
+      coachState.textContent = 'Ready to help';
+      coachStatus.textContent = 'Mic stopped. You can type or restart listening.';
+      document.getElementById('listenToggle').textContent = 'Start listening';
+    };
+  }
+
+  document.getElementById('nextQuestion').addEventListener('click', pickRandomQuestion);
+  document.getElementById('submitAnswer').addEventListener('click', analyzeAnswer);
+  document.getElementById('clearAnswer').addEventListener('click', () => {
+    userAnswer.value = '';
+    setFeedback('Feedback will appear here once you submit.');
+  });
+  document.getElementById('listenToggle').addEventListener('click', () => {
+    if(!recognition){return;}
+    if(listening){ recognition.stop(); }
+    else { recognition.start(); }
+  });
+
+  initSpeech();
+</script>
+<div class="terms-link" style="text-align:center;margin:24px 0;font-weight:700;">
+  <a href="terms-and-conditions.html" style="color:#1e90ff;text-decoration:none;">Terms and Conditions</a>
+</div></body>
+</html>
+
+

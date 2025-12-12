@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InternBuddy | Mock Interview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#4A90E2;
+      --accent-2:#FF6B6B;
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,0.04);
+      --text:#f7f9ff;
+      --muted:#b8c0d4;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Space Grotesk',sans-serif;
+      background:radial-gradient(circle at 20% 20%, rgba(74,144,226,0.14), transparent 28%),
+                 radial-gradient(circle at 80% 10%, rgba(255,107,107,0.15), transparent 28%),
+                 linear-gradient(130deg,#0b1020,#141a2f 60%,#0c1024);
+      color:var(--text);
+      min-height:100vh;
+      padding-bottom:40px;
+    }
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 5%;background:rgba(5,8,20,0.9);backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      position:sticky;top:0;z-index:10;
+    }
+    .logo{font-size:24px;font-weight:700;color:var(--accent);display:flex;align-items:center;}
+    .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);margin-left:6px;display:inline-block;}
+    nav{display:flex;gap:10px;flex-wrap:wrap;}
+    nav a{color:var(--text);text-decoration:none;padding:10px 16px;border-radius:10px;font-weight:600;transition:all .2s;}
+    nav a.btn{background:var(--accent);}
+    nav a:hover{background:#fff;color:var(--accent);transform:translateY(-1px);}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px;}
+    h1{text-align:center;margin:34px 0 14px;font-size:2.4rem;}
+    .subtitle{text-align:center;color:var(--muted);margin-bottom:30px;}
+    #top-section{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:24px 0;}
+    .video-panel{width:400px;height:460px;border-radius:18px;overflow:hidden;position:relative;background:var(--panel);border:1px solid rgba(255,255,255,0.08);box-shadow:0 12px 35px rgba(0,0,0,0.28);}
+    .video-panel h3{position:absolute;top:14px;left:14px;right:14px;text-align:center;padding:8px;border-radius:12px;background:rgba(0,0,0,0.4);font-size:1rem;letter-spacing:0.2px;}
+    .ai-portrait{width:100%;height:100%;background:linear-gradient(180deg, rgba(12,16,32,0.55), rgba(12,16,32,0.75)),
+                                  url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80') center/cover;
+      position:relative;display:grid;place-items:center;
+    }
+    .ai-portrait::after{content:"";position:absolute;bottom:32px;left:50%;width:120px;height:120px;transform:translateX(-50%);
+      background:radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18), transparent 65%);
+      filter:blur(24px);}
+    .voice-bar{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:flex-end;height:30px;}
+    .voice-bar span{width:6px;background:var(--accent);border-radius:3px;animation:equalize 1.2s infinite ease-in-out;opacity:0.8;}
+    .voice-bar span:nth-child(2){animation-delay:0.12s;} .voice-bar span:nth-child(3){animation-delay:0.24s;}
+    .voice-bar span:nth-child(4){animation-delay:0.36s;} .voice-bar span:nth-child(5){animation-delay:0.48s;}
+    .voice-bar.quiet span{animation:none;height:8px;opacity:0.35;}
+    @keyframes equalize{0%{height:8px;}50%{height:28px;}100%{height:10px;}}
+    #webcam{width:100%;height:100%;object-fit:cover;background:#111;}
+    .interview-panel{background:var(--panel);border-radius:16px;padding:22px;margin:28px auto;max-width:900px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 30px rgba(0,0,0,0.24);}
+    #question{font-size:1.3rem;margin-bottom:20px;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(255,255,255,0.03);border-radius:12px;line-height:1.5;}
+    #user-answer{margin:14px 0;padding:14px;background:rgba(0,0,0,0.35);border-radius:12px;min-height:70px;font-style:italic;color:var(--muted);}
+    .controls{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap;}
+    button{padding:12px 20px;border:none;border-radius:10px;font-weight:700;font-size:1rem;background:var(--accent);color:#fff;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.22);}
+    button:hover{transform:translateY(-2px);background:#357abf;}
+    button:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+    #next-btn{background:var(--accent-2);} #next-btn:hover{background:#e25454;}
+    #status{text-align:center;margin:12px 0;padding:10px;border-radius:10px;background:rgba(74,144,226,0.12);font-weight:600;color:#d5e5ff;}
+    h2{text-align:center;margin:32px 0 18px;font-size:2rem;}
+    #feedback{max-width:900px;margin:0 auto;}
+    .feedback-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:20px;margin:14px 0;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,0.2);} 
+    .feedback-card h4{color:var(--accent);margin-bottom:10px;font-size:1.2rem;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:8px;}
+    .feedback-card ul{margin:10px 0 12px 18px;color:var(--muted);} .feedback-card li{margin-bottom:6px;}
+    .score-badge{display:inline-block;background:var(--accent);color:#fff;padding:4px 10px;border-radius:999px;font-size:0.85rem;margin-left:8px;}
+    .overall{background:rgba(74,144,226,0.2);} 
+    @media(max-width:900px){#top-section{flex-direction:column;align-items:center;} .video-panel{width:92%;height:360px;} header{flex-direction:column;gap:10px;}}
+    @media(max-width:600px){.video-panel{height:300px;} button{width:100%;justify-content:center;} h1{font-size:2rem;}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">InternBuddy<span class="dot"></span></div>
+    <nav>
+      <a href="homepage.html" id="dashboard-link">Dashboard</a>
+      <a href="edit-profile.html" id="profile-link">Profile</a>
+      <a href="index.html" id="logout-link" class="btn">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>AI Mock Interview</h1>
+    <p class="subtitle">Human-like interviewer with rich question variety, voice delivery, and instant feedback.</p>
+
+    <div id="top-section">
+      <div class="video-panel" id="avatar-container">
+        <h3>AI Interviewer</h3>
+        <div class="ai-portrait" id="aiPortrait">
+          <div class="voice-bar quiet" id="voiceBar">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+      <div class="video-panel">
+        <h3>Your Camera</h3>
+        <video id="webcam" autoplay playsinline></video>
+      </div>
+    </div>
+
+    <div class="interview-panel">
+      <div id="question">Click "Start Interview" to begin your mock interview session.</div>
+      <div id="user-answer">Your answer will appear here as you speak...</div>
+
+      <div class="controls">
+        <button id="start-btn">? Start Interview</button>
+        <button id="next-btn" style="display:none;">? Next Question</button>
+      </div>
+
+      <div id="status">Ready when you are!</div>
+    </div>
+
+    <h2>AI Feedback</h2>
+    <div id="feedback"></div>
+  </div>
+
+  <script>
+    // State
+    let currentQ = 0;
+    let collectedAnswers = [];
+    let isInterviewActive = false;
+    let speechRecognition = null;
+    let selectedVoice = null;
+
+    // DOM
+    const questionEl = document.getElementById('question');
+    const answerEl = document.getElementById('user-answer');
+    const statusEl = document.getElementById('status');
+    const startBtn = document.getElementById('start-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const feedbackEl = document.getElementById('feedback');
+    const voiceBar = document.getElementById('voiceBar');
+
+    // Expanded question bank
+    const questions = [
+      'Tell me about yourself and why you are interested in this role.',
+      'Describe a time you had to resolve a team conflict.',
+      'How do you prioritize tasks when everything is urgent?',
+      'Walk me through a project you are proud of. What was your impact?',
+      'How do you handle receiving tough feedback?',
+      'Describe a situation where you failed. What did you learn?',
+      'Explain a complex technical concept to a non-technical stakeholder.',
+      'What motivates you to do your best work?',
+      'Tell me about a time you led without authority.',
+      'How do you keep up with industry trends?',
+      'What are your strengths and how do they show up at work?',
+      'What is a weakness you are actively improving?',
+      'Describe a time you had to learn something quickly.',
+      'How do you handle ambiguity in projects?',
+      'When have you disagreed with a manager? How did you handle it?',
+      'How do you ensure code quality under tight deadlines?',
+      'What is your approach to debugging tricky issues?',
+      'Tell me about a time you optimized performance.',
+      'How do you mentor or support teammates?',
+      'How would you design a scalable API for millions of users?',
+      'Explain the difference between REST, GraphQL, and gRPC.',
+      'Describe your approach to testing and automation.',
+      'How do you measure success on a project?',
+      'Describe a time you improved a process at work.',
+      'How do you handle stress before a deadline?',
+      'Tell me about a time you influenced a decision with data.',
+      'What do you want to learn in the next year?',
+      'How do you ensure accessibility in your products?',
+      'Describe a situation where you had to say no to a request.',
+      'How do you collaborate with design/product teams?',
+      'What does good communication look like to you?',
+      'How would you onboard yourself into a new codebase?',
+      'Tell me about a time you shipped with imperfect information.',
+      'How do you manage technical debt?',
+      'Describe a time you handled a production incident.',
+      'How do you give feedback to peers?',
+      'What is your philosophy on documentation?',
+      'Tell me about a risk you took that paid off.',
+      'What do you do if you are blocked?',
+      'Describe a time you balanced speed vs. quality.',
+      'How would you improve our product based on what you know?',
+      'Why this company and not others?',
+      'What does leadership mean to you?',
+      'How do you adapt your communication to different audiences?',
+      'What is the most challenging bug you fixed recently?',
+      'Describe how you handle multiple stakeholders with conflicting needs.',
+      'How do you ensure security best practices in your work?',
+      'Tell me about a time you used data to validate a hypothesis.',
+      'How do you plan your first 90 days in a new role?' 
+    ];
+
+    // Camera
+    async function initCamera(){
+      try{
+        const video = document.getElementById('webcam');
+        const stream = await navigator.mediaDevices.getUserMedia({video:{width:640,height:480},audio:true});
+        video.srcObject = stream;
+      }catch(err){
+        console.error('Camera error:', err);
+        statusEl.textContent = 'Camera not available. Continuing without video.';
+      }
+    }
+
+    // Voice selection
+    function pickVoice(){
+      const voices = speechSynthesis.getVoices();
+      if(!voices.length){return null;}
+      const preferred = ['Samantha','Karen','Google UK English Female','Microsoft Jenny','Microsoft Aria','Google US English'];
+      const match = voices.find(v => preferred.some(p => v.name.includes(p)));
+      return match || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    }
+
+    function ensureVoiceReady(){
+      return new Promise(resolve => {
+        const voices = speechSynthesis.getVoices();
+        if(voices.length){selectedVoice = pickVoice(); return resolve(selectedVoice);} 
+        window.speechSynthesis.onvoiceschanged = () => {selectedVoice = pickVoice(); resolve(selectedVoice);};
+      });
+    }
+
+    // Voice feedback visuals
+    function setSpeaking(isSpeaking){
+      voiceBar.classList.toggle('quiet', !isSpeaking);
+    }
+
+    // Speak
+    async function speakAI(text){
+      if(!('speechSynthesis' in window)) return;
+      await ensureVoiceReady();
+      return new Promise(resolve => {
+        speechSynthesis.cancel();
+        setSpeaking(true);
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.voice = selectedVoice;
+        utter.lang = (selectedVoice && selectedVoice.lang) || 'en-US';
+        utter.rate = 0.94 + Math.random()*0.12; // small natural variation
+        utter.pitch = 0.96 + Math.random()*0.1;
+        utter.volume = 0.92;
+        utter.onend = () => {setSpeaking(false); resolve();};
+        utter.onerror = () => {setSpeaking(false); resolve();};
+        speechSynthesis.speak(utter);
+      });
+    }
+
+    // Speech recognition
+    function startSpeechRecognition(){
+      return new Promise(resolve => {
+        const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!Rec){
+          answerEl.textContent = 'Speech recognition not supported. Please type your answers.';
+          answerEl.style.color = '#fff';
+          resolve('');
+          return;
+        }
+        const recognition = new Rec();
+        speechRecognition = recognition;
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+        recognition.continuous = false;
+        let finalTranscript = '';
+        recognition.onresult = (event) => {
+          let interim = '';
+          for(let i = event.resultIndex; i < event.results.length; i++){
+            const transcript = event.results[i][0].transcript;
+            if(event.results[i].isFinal) finalTranscript += transcript;
+            else interim += transcript;
+          }
+          answerEl.textContent = (finalTranscript + interim).trim();
+          answerEl.style.color = '#fff';
+        };
+        recognition.onend = () => {speechRecognition = null; resolve(finalTranscript.trim());};
+        recognition.onerror = () => {speechRecognition = null; resolve(finalTranscript.trim());};
+        recognition.start();
+      });
+    }
+
+    function stopSpeechRecognition(){
+      if(speechRecognition){speechRecognition.stop(); speechRecognition = null;}
+    }
+
+    // Interview flow
+    async function startInterview(){
+      if(isInterviewActive) return;
+      isInterviewActive = true;
+      startBtn.disabled = true;
+      startBtn.style.display = 'none';
+      nextBtn.style.display = 'flex';
+      currentQ = 0;
+      collectedAnswers = [];
+      feedbackEl.innerHTML = '';
+      statusEl.textContent = 'Starting your mock interview...';
+      await askQuestion();
+    }
+
+    async function askQuestion(){
+      if(currentQ >= questions.length){await endInterview(); return;}
+      const question = questions[currentQ];
+      questionEl.textContent = `Question ${currentQ+1}/${questions.length}: ${question}`;
+      answerEl.textContent = 'Preparing question...';
+      answerEl.style.color = '#b8c0d4';
+      statusEl.textContent = 'AI interviewer is speaking...';
+      stopSpeechRecognition();
+      await speakAI(question);
+      answerEl.textContent = 'Listening... Please speak your answer clearly.';
+      statusEl.textContent = 'Listening for your response...';
+      const answer = await startSpeechRecognition();
+      collectedAnswers.push({question, answer: answer || '(No answer recorded)'});
+      statusEl.textContent = 'Answer recorded! Ready for next question.';
+      showImmediateFeedback(question, answer);
+    }
+
+    function showImmediateFeedback(question, answer){
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback-card';
+      const lengthWords = (answer || '').split(/\s+/).filter(Boolean).length;
+      const tips = [];
+      if(lengthWords < 20) tips.push('Add more detail and examples (aim 30-60 seconds).');
+      else if(lengthWords > 110) tips.push('Great depth—keep it concise and focused.');
+      if(!(answer || '').toLowerCase().includes('i ')) tips.push('Use "I" statements to show ownership.');
+      if(!(answer || '').toLowerCase().includes('result')) tips.push('Close with impact/result to finish strong.');
+      feedbackDiv.innerHTML = `
+        <h4>Question ${currentQ + 1} <span class="score-badge">Immediate Tips</span></h4>
+        <p><strong>Your Answer:</strong> ${answer || 'No answer recorded'}</p>
+        <strong>Quick Tips:</strong>
+        <ul>${tips.map(t => `<li>${t}</li>`).join('')}</ul>
+      `;
+      feedbackEl.appendChild(feedbackDiv);
+    }
+
+    async function nextQuestion(){
+      if(!isInterviewActive) return;
+      nextBtn.disabled = true;
+      currentQ++;
+      await askQuestion();
+      nextBtn.disabled = false;
+    }
+
+    async function endInterview(){
+      isInterviewActive = false;
+      questionEl.textContent = 'Interview complete! Thank you for your participation.';
+      answerEl.textContent = '';
+      statusEl.textContent = 'Generating detailed AI feedback...';
+      nextBtn.style.display = 'none';
+      startBtn.style.display = 'flex';
+      startBtn.disabled = false;
+      startBtn.textContent = 'Start New Interview';
+      await generateAIFeedback();
+    }
+
+    // Mock AI feedback (replace with real API call if available)
+    async function generateAIFeedback(){
+      await new Promise(res => setTimeout(res, 1400));
+      const report = collectedAnswers.map((qa, idx) => {
+        const words = qa.answer.split(/\s+/).filter(Boolean).length;
+        const filler = (qa.answer.match(/\bum\b|\buh\b/gi)||[]).length;
+        const score = Math.max(5, Math.min(10, 8 + (words>40?1:-1) - Math.min(2, filler)));
+        return {
+          question: qa.question,
+          answer: qa.answer,
+          score,
+          tips:[
+            words < 25 ? 'Expand with STAR (Situation, Task, Action, Result).' : 'Nice length—stay focused on outcomes.',
+            filler ? 'Reduce filler words; pause instead.' : 'Delivery is clean—keep it up.',
+            qa.answer.toLowerCase().includes('result') ? 'Good: you included impact/results.' : 'Add impact/results to land the answer.'
+          ]
+        };
+      });
+      displayFeedback(report);
+      statusEl.textContent = 'Feedback complete! Review your performance below.';
+    }
+
+    function displayFeedback(report){
+      feedbackEl.innerHTML = '';
+      let total = 0;
+      report.forEach((item, idx) => {
+        total += item.score;
+        const div = document.createElement('div');
+        div.className = 'feedback-card';
+        div.innerHTML = `
+          <h4>Question ${idx+1} <span class="score-badge">Score: ${item.score}/10</span></h4>
+          <p><strong>Question:</strong> ${item.question}</p>
+          <p><strong>Your Answer:</strong> ${item.answer}</p>
+          <strong>Pro Tips:</strong>
+          <ul>${item.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+        `;
+        feedbackEl.appendChild(div);
+      });
+      const overall = document.createElement('div');
+      overall.className = 'feedback-card overall';
+      const avg = Math.round(total / report.length);
+      overall.innerHTML = `
+        <h4>Overall Performance: ${avg}/10</h4>
+        <p><strong>Strengths:</strong> Clear communication and structured thinking.</p>
+        <p><strong>Focus Areas:</strong> ${avg < 8 ? 'Add specific metrics/examples to boost credibility.' : 'Keep refining pacing and brevity.'}</p>
+        <p><strong>Next Step:</strong> Practice 2 more rounds to smooth delivery.</p>
+      `;
+      feedbackEl.appendChild(overall);
+    }
+
+    // Events
+    startBtn.addEventListener('click', startInterview);
+    nextBtn.addEventListener('click', nextQuestion);
+
+    ['logout-link','dashboard-link','profile-link'].forEach(id => {
+      document.getElementById(id).addEventListener('click', e => {
+        e.preventDefault();
+        stopSpeechRecognition();
+        speechSynthesis.cancel();
+        window.location.href = document.getElementById(id).getAttribute('href');
+      });
+    });
+
+    // Init
+    (async function init(){
+      await initCamera();
+      await ensureVoiceReady();
+      statusEl.textContent = 'Ready to start your mock interview! Click Start when ready.';
+    })();
+  </script>
+<div class="terms-link" style="text-align:center;margin:24px 0;font-weight:700;">
+  <a href="terms-and-conditions.html" style="color:#1e90ff;text-decoration:none;">Terms and Conditions</a>
+</div></body>
+</html>
+
+
